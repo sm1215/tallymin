@@ -1,0 +1,12 @@
+.clearfix {
+	float: none;
+	clear: both;
+}
+
+.container {
+	margin: 0 auto;
+}
+
+table, th, td {
+	border: 1px solid;
+}
