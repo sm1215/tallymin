@@ -4,7 +4,7 @@
 }
 
 .container {
-	margin: 0 auto;
+	margin: 50px auto 0 auto;
 }
 
 .tabulator .tabulator-header .tabulator-col[tabulator-field="rowSelection"] {
@@ -17,4 +17,8 @@
 
 input {
 	user-select: text;
+}
+
+.controls.top {
+	margin-bottom: 20px;
 }

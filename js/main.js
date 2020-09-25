@@ -102,17 +102,17 @@ const tallymin = {
 		}
 		this.table = new Tabulator(this.containerSelector, tableCfg);
 
-		//Add row on "Add Row" button click
+		// Add row on "Add Row" button click
 		document.getElementById("add-row").addEventListener("click", function(ev) {
-			tallymin.table.addRow({});
+			tallymin.table.addRow();
 		});
 		
-		//undo button
+		// undo button
 		document.getElementById("history-undo").addEventListener("click", function(){
 			tallymin.table.undo();
 		});
 
-		//redo button
+		// redo button
 		document.getElementById("history-redo").addEventListener("click", function(){
 			tallymin.table.redo();
 		});
@@ -127,6 +127,13 @@ const tallymin = {
 				score = parseInt(score, 10);
 				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
 				scoreCell.setValue(score + modifyAmt);
+			});
+		});
+
+		// multirow delete button
+		document.getElementById("multirow-delete-button").addEventListener("click", function() {
+			tallymin.table.getSelectedRows().forEach(row => {
+				row.delete();
 			});
 		});
 
