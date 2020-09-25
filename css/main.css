@@ -11,6 +11,10 @@
 	text-align: center;
 }
 
-.apply-button {
+#tallymin-table, .apply-button {
 	user-select: none;
+}
+
+input {
+	user-select: text;
 }

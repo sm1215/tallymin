@@ -1,92 +1,4 @@
-// const tableCfg = {
-// 	columns: [
-// 		{
-// 			name: 'Select All',
-// 			contents: {
-// 				read: [
-// 					{
-// 						tag: 'label',
-// 					},
-// 					{
-// 						tag: 'input',
-// 						type: 'checkbox'
-// 					}
-// 				],
-// 				write: {}
-// 			}
-// 		},
-// 		{
-// 			name: 'Name',
-// 			contents: {
-// 				read: {
-// 					tag: 'p'
-// 				},
-// 				write: {
-// 					tag: 'input',
-// 					type: 'text'
-// 				}
-// 			}
-// 		},
-// 		{
-// 			name: 'Score',
-// 			contents: {
-// 				read: {
-// 					tag: 'p'
-// 				},
-// 				write: {
-// 					tag: 'input',
-// 					type: 'text'
-// 				}
-// 			}
-// 		},
-// 		{
-// 			name: 'Modifier',
-// 			contents: {
-// 				read: {
-// 					tag: 'p'
-// 				},
-// 				write: {
-// 					tag: 'input',
-// 					type: 'text'
-// 				}
-// 			}
-// 		},
-// 		{
-// 			name: 'Subtract?',
-// 			contents: {
-// 				read: {
-// 					tag: 'input',
-// 					type: 'checkbox'
-// 				},
-// 				write: {}
-// 			}
-// 		},
-// 		{
-// 			name: 'Apply',
-// 			contents: {
-// 				read: {
-// 					tag: 'input',
-// 					type: 'button'
-// 				},
-// 				write: {}
-// 			}
-// 		}
-// 	]
-// };
-// const appData = [
-// 	{
-// 		id: 0,
-// 		name: 'Sam',
-// 		score: 0,
-// 		history: []
-// 	},
-// 	{
-// 		id: 1,
-// 		name: 'Amy',
-// 		score: 20,
-// 		history: []
-// 	}
-// ];
+const TEST_MODE = true;
 
 const tableData = [
 	{
@@ -112,7 +24,6 @@ const tableData = [
 ]
 
 const tableCfg = {
-	data: tableData,
 	history: true,
 	layout: "fitColumns",
 	persistence: {
@@ -141,6 +52,9 @@ const tableCfg = {
 			field: "name",
 			width: 100,
 			editor: true,
+			editable: function (cell) {
+				return cell.getElement().disabled !== true;
+			},
 			editorParams: {
 				allowEmpty: true,
 				showListOnEmpty: true,
@@ -176,16 +90,16 @@ const tableCfg = {
 			}
 		}
 	]
-}
+};
 
 const tallymin = {
 	containerSelector: '#tallymin-table',
-	container: null,
 	table: null,
-	headers: null,
-	rows: null,
+	namesLocked: false,
 	init: function() {
-		this.container = document.querySelector(this.containerSelector);
+		if (TEST_MODE) {
+			tableCfg.data = tableData;
+		}
 		this.table = new Tabulator(this.containerSelector, tableCfg);
 
 		//Add row on "Add Row" button click
@@ -209,12 +123,22 @@ const tallymin = {
 			modifyAmt = parseInt(modifyAmt, 10);
 
 			tallymin.table.getSelectedRows().forEach(row => {
-				console.log("row", row);
 				let {score} = row.getData();
 				score = parseInt(score, 10);
-
 				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
 				scoreCell.setValue(score + modifyAmt);
+			});
+		});
+
+		// lock names button
+		document.getElementById("lock-names").addEventListener("click", function(ev) {
+			const locked = tallymin.namesLocked = !tallymin.namesLocked;
+			const buttonText = locked ? 'Unlock Names' : 'Lock Names';
+			ev.target.textContent = buttonText;
+
+			tallymin.table.getRows().forEach(row => {
+				const [nameCell] = row.getCells().filter(cell => cell.getField() === 'name');
+				nameCell.getElement().disabled = locked;
 			});
 		});
 	}
