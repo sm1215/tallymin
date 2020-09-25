@@ -110,7 +110,11 @@ const tallymin = {
 
 		// Add row on "Add Row" button click
 		document.getElementById("add-row").addEventListener("click", function(ev) {
-			tallymin.table.addRow();
+			tallymin.table.addRow({
+				name: 'Team name',
+				score: 0,
+				modifyAmt: 0
+			});
 		});
 		
 		// undo button
