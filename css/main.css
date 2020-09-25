@@ -24,18 +24,48 @@ input {
 	justify-content: space-between;
 }
 
+.controls div {
+	display: flex;
+}
+
 .controls.top {
 	margin-bottom: 20px;
 	padding-bottom: 20px;
 	border-bottom: 1px solid;
 }
 
+.controls.top div {
+	align-items: flex-end;
+}
+
 .controls.bottom {
 	margin-top: 20px;
+}
+
+.controls.bottom div {
+	align-items: flex-start;
+}
+
+.controls input {
+	height: 16px;
+	margin-right: 10px;
+	width: 150px;
+}
+
+.controls button {
+	margin-right: 10px;
+}
+
+.controls button:last-child {
+	margin: 0;
 }
 
 .instructions {
 	margin-top: 20px;
 	padding-top: 20px;
 	border-top: 1px solid;
+}
+
+.tabulator-row-odd {
+	background-color: #f5f5f5;
 }
