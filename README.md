@@ -16,4 +16,6 @@ Press the Apply button to alter the current score by the Modify Amount.
 
 The same concept can be applied to multiple rows by just selecting them and using the Multi-row Modification controls.
 
+Use the sortable controls at the top of the Name or Score columns to sort alphabetically or by highscore.
+
 Visit: https://sm1215.github.io/tallymin/
