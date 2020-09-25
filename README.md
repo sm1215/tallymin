@@ -2,6 +2,8 @@
 
 A simple utility to help keep track of scores for trivia games. First version with functionality first, styles to come later.
 
+Visit: https://sm1215.github.io/tallymin/
+
 ![Preview](images/preview.png)
 
 Add rows and team names.
@@ -19,8 +21,6 @@ The same concept can be applied to multiple rows by just selecting them and usin
 Use the sortable controls at the top of the Name or Score columns to sort alphabetically or by highscore.
 
 The table history is saved so you can undo / redo changes! Just don't refresh the page (better persistence to survive a page refresh to come).
-
-Visit: https://sm1215.github.io/tallymin/
 
 todo
   - fill new rows with default data, Name: "Player", Score: 0, Modify Amount: 0
