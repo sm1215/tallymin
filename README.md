@@ -18,4 +18,6 @@ The same concept can be applied to multiple rows by just selecting them and usin
 
 Use the sortable controls at the top of the Name or Score columns to sort alphabetically or by highscore.
 
+The table history is saved so you can undo / redo changes! Just don't refresh the page (better persistence to survive a page refresh to come).
+
 Visit: https://sm1215.github.io/tallymin/
