@@ -7,6 +7,10 @@
 	margin: 0 auto;
 }
 
-table, th, td {
-	border: 1px solid;
+.tabulator .tabulator-header .tabulator-col[tabulator-field="rowSelection"] {
+	text-align: center;
+}
+
+.apply-button {
+	user-select: none;
 }

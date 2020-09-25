@@ -113,10 +113,7 @@ const tableData = [
 
 const tableCfg = {
 	data: tableData,
-	// autoColumns: true,
-	height: "311px",
 	history: true,
-	// selectable: true,
 	layout: "fitColumns",
 	persistence: {
 		sort: true,
@@ -125,10 +122,12 @@ const tableCfg = {
 	},
 	columns: [
 		{
+			field: 'rowSelection',
 			formatter: "rowSelection",
 			titleFormatter: "rowSelection",
 			hozAlign: "center",
 			headerSort: false,
+			width: 40,
 			cellClick: function(e, cell) {
 				cell.getRow().toggleSelect();
 			}
@@ -140,6 +139,7 @@ const tableCfg = {
 		{
 			title: "Name",
 			field: "name",
+			width: 100,
 			editor: true,
 			editorParams: {
 				allowEmpty: true,
@@ -164,7 +164,7 @@ const tableCfg = {
 			headerSort: false,
 			hozAlign: "center",
 			formatter: function(cell, formatterParams) {
-				return `<button>Apply to Row</button>`;
+				return `<button class="apply-button">Apply to Row</button>`;
 			},
 			cellClick: function(e, cell) {
 				let {score, modifyAmt} = cell.getData();
@@ -201,6 +201,21 @@ const tallymin = {
 		//redo button
 		document.getElementById("history-redo").addEventListener("click", function(){
 			tallymin.table.redo();
+		});
+
+		// multirow modify button
+		document.getElementById("multirow-modify-button").addEventListener("click", function() {
+			let modifyAmt = document.getElementById("multirow-modify-amount").value;
+			modifyAmt = parseInt(modifyAmt, 10);
+
+			tallymin.table.getSelectedRows().forEach(row => {
+				console.log("row", row);
+				let {score} = row.getData();
+				score = parseInt(score, 10);
+
+				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
+				scoreCell.setValue(score + modifyAmt);
+			});
 		});
 	}
 };

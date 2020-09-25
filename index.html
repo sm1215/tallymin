@@ -10,7 +10,7 @@
 	</head>
 	<body>
 		<div id="tallymin-container" class="container">
-			<div id="tallymin-controls">
+			<div class="controls">
 				<button id="add-row">Add Row</button>
 				<!-- <button id="del-row">Remove Row "Oli Bob"</button>
 				<button id="clear">Empty the table</button>
@@ -19,6 +19,12 @@
 				<button id="history-redo">Redo</button>
 			</div>
 			<div id="tallymin-table"></div>
+			<div class="controls">
+				<h4>Multi-row Modifications</h4>
+				<p>These controls will apply to all checked rows</p>
+				<input type="text" id="multirow-modify-amount">
+				<button id="multirow-modify-button">Modify Scores</button>
+			</div>
 		</div>
 		<script type="text/javascript" src="vendor/tabulator/js/tabulator.min.js"></script>
 		<script src="./js/main.js"></script>
