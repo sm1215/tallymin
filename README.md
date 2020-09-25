@@ -8,9 +8,9 @@ Add rows and team names.
 
 Lock the names to avoid accidental changes.
 
-Modify the score column directly for quick direct changes.
+Click into the Score column directly for quick modification changes.
 
-Use the 'Modify Amount' column to increment or decrement a score. It accepts positive and negative numbers. 
+Click into the 'Modify Amount' column to increment or decrement a score. It accepts positive and negative numbers. 
 
 Press the Apply button to alter the current score by the Modify Amount.
 
