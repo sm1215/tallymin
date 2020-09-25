@@ -34,4 +34,5 @@ todo
   - migrate instructions to the page itself
   - adjust styles to better fit mobile portrait
   - add hover ability for truncated text
-  - add a second table that displays the history
+  - add a table that displays the history
+  - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
