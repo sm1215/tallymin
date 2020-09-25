@@ -5,27 +5,33 @@
 		<title>Tallymin</title>
 		<link rel="stylesheet" href="./css/bootstrap.css"></link>
 		<link rel="stylesheet" href="./css/bootstrap-responsive.css"></link>
-		<link rel="stylesheet" href="vendor/tabulator/css/tabulator.min.css">
+		<link rel="stylesheet" href="vendor/tabulator/css/materialize/tabulator_materialize.min.css">
 		<link rel="stylesheet" href="./css/main.css"></link>
 	</head>
 	<body>
 		<div id="tallymin-container" class="container">
 			<div class="controls top">
-				<button id="add-row">Add Row</button>
-				<button id="history-undo">Undo</button>
-				<button id="history-redo">Redo</button>
-				<button id="lock-names">Lock Names</button>
+				<div class="left">
+					<button id="add-row">Add Row</button>
+					<button id="lock-names">Lock Names</button>
+				</div>
+				<div class="right">
+					<button id="history-undo">Undo</button>
+					<button id="history-redo">Redo</button>
+				</div>
 			</div>
 			<div id="tallymin-table"></div>
-			<div class="controls bottom">
+
+			<div class="instructions">
 				<h4>Multi-row Modifications</h4>
 				<p>These controls will apply to all checked rows</p>
-				<div>
+			</div>
+			<div class="controls bottom">
+				<div class="left">
 					<input type="text" id="multirow-modify-amount">
 					<button id="multirow-modify-button">Modify Scores</button>
 				</div>
-				<br>
-				<div>
+				<div class="right">
 					<button id="multirow-delete-button">Delete Rows</button>
 				</div>
 			</div>

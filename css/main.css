@@ -19,6 +19,23 @@ input {
 	user-select: text;
 }
 
+.controls {
+	display: flex;
+	justify-content: space-between;
+}
+
 .controls.top {
 	margin-bottom: 20px;
+	padding-bottom: 20px;
+	border-bottom: 1px solid;
+}
+
+.controls.bottom {
+	margin-top: 20px;
+}
+
+.instructions {
+	margin-top: 20px;
+	padding-top: 20px;
+	border-top: 1px solid;
 }

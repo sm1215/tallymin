@@ -26,11 +26,11 @@ const tableData = [
 const tableCfg = {
 	history: true,
 	layout: "fitColumns",
-	persistence: {
-		sort: true,
-		filter: true,
-		columns: true,
-	},
+	// persistence: {
+	// 	sort: true,
+	// 	filter: true,
+	// 	columns: true,
+	// },
 	columns: [
 		{
 			field: 'rowSelection',
@@ -38,20 +38,23 @@ const tableCfg = {
 			titleFormatter: "rowSelection",
 			hozAlign: "center",
 			headerSort: false,
-			width: 40,
+			width: 50,
 			cellClick: function(e, cell) {
 				cell.getRow().toggleSelect();
 			}
 		},
 		{
+			field: 'rownum',
 			formatter: "rownum",
 			hozAlign: "center",
+			headerSort: false,
+			width: 50
 		},
 		{
 			title: "Name",
 			field: "name",
-			width: 100,
 			editor: true,
+			widthGrow: 2,
 			editable: function (cell) {
 				return cell.getElement().disabled !== true;
 			},
@@ -65,16 +68,19 @@ const tableCfg = {
 			title: "Score",
 			field: "score",
 			sorter: "number",
-			editor: "number"
+			editor: "number",
+			widthGrow: 1
 		},
 		{
 			title: "Modify Amount",
 			field: "modifyAmt",
 			headerSort: false,
-			editor: "number"
+			editor: "number",
+			widthGrow: 1
 		},
 		{
 			field: 'apply',
+			width: 140,
 			headerSort: false,
 			hozAlign: "center",
 			formatter: function(cell, formatterParams) {
