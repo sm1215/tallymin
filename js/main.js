@@ -92,12 +92,12 @@ const tableData = [
 	{
 		name: 'Sam',
 		score: -10,
-		modifyAmt: 0
+		modifyAmt: -10
 	},
 	{
 		name: 'Amy',
 		score: 5,
-		modifyAmt: 0
+		modifyAmt: 23
 	},
 	{
 		name: 'Shane',
@@ -107,12 +107,12 @@ const tableData = [
 	{
 		name: 'Faith',
 		score: 809,
-		modifyAmt: 0
+		modifyAmt: 1000
 	}
 ]
 
 const tableCfg = {
-	// data: tableData,
+	data: tableData,
 	// autoColumns: true,
 	height: "311px",
 	history: true,
@@ -151,32 +151,35 @@ const tableCfg = {
 			title: "Score",
 			field: "score",
 			sorter: "number",
-			editor: true
+			editor: "number"
 		},
 		{
-			title: "Modify Amt",
+			title: "Modify Amount",
 			field: "modifyAmt",
-			editor: "input"
+			headerSort: false,
+			editor: "number"
 		},
 		{
-			title: 'Apply',
 			field: 'apply',
 			headerSort: false,
 			hozAlign: "center",
 			formatter: function(cell, formatterParams) {
-				return `<button>Apply</button>`;
+				return `<button>Apply to Row</button>`;
 			},
 			cellClick: function(e, cell) {
-				console.log("click");
-				// prevent the row from being selected when this cell is clicked
-				e.stopPropagation();
+				let {score, modifyAmt} = cell.getData();
+				score = parseInt(score, 10),
+				modifyAmt = parseInt(modifyAmt, 10);
+
+				const [scoreCell] = cell.getRow().getCells().filter(cell => cell.getField() === 'score');
+				scoreCell.setValue(score + modifyAmt);
 			}
 		}
 	]
 }
 
 const tallymin = {
-	containerSelector: '#tallymin-container',
+	containerSelector: '#tallymin-table',
 	container: null,
 	table: null,
 	headers: null,
