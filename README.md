@@ -31,5 +31,6 @@ todo
   - continue working on colors / fonts
   - add clear table button
   - persist table state and history through refresh
+  - migrate instructions to the page itself
   - adjust styles to better fit mobile portrait
   - add hover ability for truncated text
