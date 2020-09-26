@@ -25,6 +25,7 @@ const tableData = [
 
 const tableCfg = {
 	history: true,
+	clipboard: true,
 	layout: "fitColumns",
 	// persistence: {
 	// 	sort: true,
@@ -39,6 +40,7 @@ const tableCfg = {
 			hozAlign: "center",
 			headerSort: false,
 			width: 50,
+			clipboard: false,
 			cellClick: function(e, cell) {
 				cell.getRow().toggleSelect();
 			}
@@ -53,19 +55,10 @@ const tableCfg = {
 		{
 			title: "Name",
 			field: "name",
-			editor: true,
 			widthGrow: 2,
-			formatter: function(cell, formatterParams) {
-				cell.getElement().classList.add(...['fa', 'fas']);
-				return `<span class="content">${cell.getValue()}</span>`;
-			},
+			editor: 'input',
 			editable: function (cell) {
-				return cell.getElement().classList.contains('locked');
-			},
-			editorParams: {
-				allowEmpty: true,
-				showListOnEmpty: true,
-				values: true
+				return !cell.getElement().classList.contains('locked');
 			}
 		},
 		{
@@ -83,6 +76,7 @@ const tableCfg = {
 			field: "modifyAmt",
 			headerSort: false,
 			widthGrow: 1,
+			clipboard: false,
 			// use a custom editor so we can have access to the input element
 			// this gets dynamically created each time the user initiates an edit
 			editor: function(cell, onRendered, success, cancel, editorParams) {
@@ -118,6 +112,7 @@ const tableCfg = {
 			width: 140,
 			headerSort: false,
 			hozAlign: "center",
+			clipboard: false,
 			formatter: function(cell, formatterParams) {
 				return `
 					<button class="apply-button">
@@ -223,6 +218,11 @@ const tallymin = {
 					nameCell.getElement().classList.remove('locked');
 				}
 			});
+		});
+
+		// copy table
+		document.getElementById('copy-table').addEventListener('click', function() {
+			tallymin.table.copyToClipboard('all');
 		});
 	},
 	sortScoreColumn: function() {
