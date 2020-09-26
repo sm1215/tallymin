@@ -25,13 +25,16 @@ const tableData = [
 
 const tableCfg = {
 	history: true,
-	clipboard: true,
 	layout: "fitColumns",
 	// persistence: {
-	// 	sort: true,
-	// 	filter: true,
-	// 	columns: true,
-	// },
+		// 	sort: true,
+		// 	filter: true,
+		// 	columns: true,
+		// },
+	clipboard: true,
+	clipboardCopied:function(clipboard){
+		console.log("copied", clipboard);
+	},
 	columns: [
 		{
 			field: 'rowSelection',
@@ -147,6 +150,8 @@ const tallymin = {
 			tableCfg.data = tableData;
 		}
 		this.table = new Tabulator(this.containerSelector, tableCfg);
+		// enable copying
+		tallymin.table.copyToClipboard('all');
 
 		// Add row on "Add Row" button click
 		document.getElementById("add-row").addEventListener("click", function(ev) {
@@ -218,11 +223,6 @@ const tallymin = {
 					nameCell.getElement().classList.remove('locked');
 				}
 			});
-		});
-
-		// copy table
-		document.getElementById('copy-table').addEventListener('click', function() {
-			tallymin.table.copyToClipboard('all');
 		});
 	},
 	sortScoreColumn: function() {
