@@ -29,13 +29,14 @@ todo
   - refacor how events are are added
   - find a way to autoselect modify amount values when clicked
   - continue working on colors / fonts
+  - move lock names button to column header
+  - add a table that displays the history
+  - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
   - add clear table button
   - persist table state and history through refresh
   - migrate instructions to the page itself
   - adjust styles to better fit mobile portrait
   - add hover ability for truncated text
-  - add a table that displays the history
-  - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
 
 completed changes
   - fill new rows with default data, Name: "Player", Score: 0, Modify Amount: 0
