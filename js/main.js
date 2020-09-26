@@ -8,12 +8,12 @@ const tableData = [
 	},
 	{
 		name: 'Amy',
-		score: 5,
+		score: 50,
 		modifyAmt: 23
 	},
 	{
 		name: 'Shane',
-		score: 23,
+		score: 5,
 		modifyAmt: 0
 	},
 	{
@@ -73,7 +73,10 @@ const tableCfg = {
 			field: "score",
 			sorter: "number",
 			editor: "number",
-			widthGrow: 1
+			widthGrow: 1,
+			cellEdited: function(e, cell) {
+				tallymin.sortScoreColumn();
+			}
 		},
 		{
 			title: "Modify Amount",
@@ -105,6 +108,8 @@ const tableCfg = {
 				const [modifyAmtCell] = cells.filter(cell => cell.getField() === 'modifyAmt');
 				scoreCell.setValue(score + modifyAmt);
 				modifyAmtCell.setValue(0);
+
+				tallymin.sortScoreColumn();
 			}
 		}
 	]
@@ -165,6 +170,7 @@ const tallymin = {
 			});
 
 			amountInput.value = 0;
+			tallymin.sortScoreColumn();
 		});
 
 		// multirow delete button
@@ -189,6 +195,17 @@ const tallymin = {
 				}
 			});
 		});
+	},
+	sortScoreColumn: function() {
+		const sorters = tallymin.table.getSorters();
+		// only sort the score column if it is already being sorted by the user
+		// repeat the same sort direction
+		const sort = sorters.filter(entry => entry.field === 'score')[0];
+		if (sort) {
+			tallymin.table.setSort([
+				{column: 'score', dir: sort.dir}
+			]);
+		}
 	}
 };
 
