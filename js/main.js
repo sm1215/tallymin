@@ -173,6 +173,7 @@ const tallymin = {
 	table: null,
 	namesLocked: false,
 	intercomDuration: 3, // seconds
+	intercomTimer: null,
 	init: function() {
 		if (TEST_MODE) {
 			tableCfg.data = tableData;
@@ -252,6 +253,15 @@ const tallymin = {
 				}
 			});
 		});
+
+		document.getElementById('intercom').addEventListener('click', function() {
+			this.classList.remove('show');
+			intercom.innerHTML = '';
+
+			if (tallymin.intercomTimer) {
+				clearTimeout(tallymin.intercomTimer);
+			}
+		});
 	},
 	sortScoreColumn: function() {
 		const sorters = tallymin.table.getSorters();
@@ -282,7 +292,7 @@ const tallymin = {
 		content.appendChild(paragraph);
 		intercom.appendChild(content);
 
-		setTimeout(() => {
+		tallymin.intercomTimer = setTimeout(() => {
 			intercom.classList.remove('show');
 			intercom.innerHTML = '';
 		}, (tallymin.intercomDuration + 1) * 1000);

@@ -95,6 +95,11 @@ button:hover i {
 	box-shadow: 10px 10px var(--table-drop-shadow);
 }
 
+#intercom {
+	background-color: var(--light1);
+	box-shadow: 3px 3px var(--table-drop-shadow);
+}
+
 .tabulator-row-even {
 	background-color: var(--table-even-bg);
 }
@@ -256,17 +261,16 @@ input {
 	position: absolute;
 	top: -50px;
 	opacity: 0;
-	left: calc(50% - 150px);
-	width: 300px;
 	z-index: 2;
-	background: white;
 	border-width: 1px;
 	border-style: solid;
 	cursor: pointer;
+	left: calc(50% - 125px);
+	width: 250px;
 }
 
 #intercom .content {
-	padding: 15px 20px 10px 20px;
+	padding: 15px 10px 10px 10px;
 }
 
 #intercom p {
@@ -275,10 +279,9 @@ input {
 }
 
 #intercom.show {
-	opacity: 0.1;
 	animation-name: intercomShow;
 	animation-timing-function: ease;
-	animation-duration: 4s;
+	animation-duration: 3s;
 	animation-iteration-count: 1;
 	animation-fill-mode: both;
 } 
@@ -286,24 +289,17 @@ input {
 @keyframes intercomShow { 
 	0% { 
 		opacity: 0;
-		top: -50px;
-	}
-	20% {
-		opacity: 1;
 	}
 	30% { 
 		opacity: 1;
-		top: -1px;
+		top: 10px;
 	}
 	70% {
 		opacity: 1;
-		top: -1px;
-	}
-	90% {
-		opacity: 0;
+		top: 10px;
 	}
 	100% {
 		opacity: 0;
-		top: -50px;
+		top: -100px;
 	}
 } 
