@@ -97,3 +97,58 @@ input {
 	font-family: "Font Awesome 5 Free";
 	font-weight: 900;
 }
+
+#intercom {
+	position: absolute;
+	top: -50px;
+	opacity: 0;
+	left: calc(50% - 150px);
+	width: 300px;
+	z-index: 2;
+	background: white;
+	border: 1px solid;
+	cursor: pointer;
+}
+
+#intercom .content {
+	padding: 15px 20px 10px 20px;
+}
+
+#intercom p {
+	margin: 0;
+	text-align: center;
+}
+
+#intercom.show {
+	opacity: 0.1;
+	animation-name: intercomShow;
+	animation-timing-function: ease;
+	animation-duration: 4s;
+	animation-iteration-count: 1;
+	animation-fill-mode: both;
+} 
+  
+@keyframes intercomShow { 
+	0% { 
+		opacity: 0;
+		top: -50px;
+	}
+	20% {
+		opacity: 1;
+	}
+	30% { 
+		opacity: 1;
+		top: -1px;
+	}
+	70% {
+		opacity: 1;
+		top: -1px;
+	}
+	90% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 0;
+		top: -50px;
+	}
+} 

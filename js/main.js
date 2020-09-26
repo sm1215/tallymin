@@ -34,6 +34,7 @@ const tableCfg = {
 	clipboard: true,
 	clipboardCopied:function(clipboard){
 		console.log("copied", clipboard);
+		tallymin.intercom('Standings successfully copied');
 	},
 	columns: [
 		{
@@ -145,6 +146,7 @@ const tallymin = {
 	containerSelector: '#tallymin-table',
 	table: null,
 	namesLocked: false,
+	intercomDuration: 3, // seconds
 	init: function() {
 		if (TEST_MODE) {
 			tableCfg.data = tableData;
@@ -232,7 +234,7 @@ const tallymin = {
 		const sort = sorters.filter(entry => entry.field === 'score')[0];
 		if (sort) {
 			tallymin.table.setSort([
-				{column: 'score', dir: sort.dir}
+				{ column: 'score', dir: sort.dir }
 			]);
 		}
 	},
@@ -240,6 +242,24 @@ const tallymin = {
 		tallymin.table.getSelectedRows().forEach(row => {
 			tallymin.table.deselectRow(row);
 		});
+	},
+	intercom: function(message = '') {
+		const intercom = document.getElementById('intercom');
+		const content = document.createElement('div');
+		const paragraph = document.createElement('p');
+
+		intercom.style.animationDuration = `${tallymin.intercomDuration}s`;
+		intercom.classList.add('show');
+		content.classList.add('content');
+		paragraph.textContent = message;
+
+		content.appendChild(paragraph);
+		intercom.appendChild(content);
+
+		setTimeout(() => {
+			intercom.classList.remove('show');
+			intercom.innerHTML = '';
+		}, (tallymin.intercomDuration + 1) * 1000);
 	}
 };
 
