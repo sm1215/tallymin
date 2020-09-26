@@ -37,7 +37,7 @@ todo
   - add a table that displays the history
   - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
 
-changes
+completed changes
   - fill new rows with default data, Name: "Player", Score: 0, Modify Amount: 0
   - clear Modify Amount inputs after applying
   - add style to locked names for better visual indicator
