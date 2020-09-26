@@ -170,6 +170,7 @@ const tallymin = {
 			});
 
 			amountInput.value = 0;
+			tallymin.deselectAllRows();
 			tallymin.sortScoreColumn();
 		});
 
@@ -206,6 +207,11 @@ const tallymin = {
 				{column: 'score', dir: sort.dir}
 			]);
 		}
+	},
+	deselectAllRows: function() {
+		tallymin.table.getSelectedRows().forEach(row => {
+			tallymin.table.deselectRow(row);
+		});
 	}
 };
 
