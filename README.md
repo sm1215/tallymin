@@ -25,9 +25,10 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 todo
   X fill new rows with default data, Name: "Player", Score: 0, Modify Amount: 0
   X clear Modify Amount inputs after applying
-  - add style to unlocked names for better visual indicator
+  X add style to unlocked names for better visual indicator
   - add icons for controls
   - re-sort rows after score update
+  - refacor how events are are added
   - find a way to autoselect modify amount values when clicked
   - continue working on colors / fonts
   - add clear table button

@@ -69,3 +69,14 @@ input {
 .tabulator-row-odd {
 	background-color: #f5f5f5;
 }
+
+.tabulator-cell.locked {
+	position: relative;
+}
+.tabulator-cell.locked::after {
+	position: absolute;
+	right: 20px;
+	content: '(locked)';
+	text-align: right;
+	opacity: 0.3;
+}

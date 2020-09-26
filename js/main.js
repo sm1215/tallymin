@@ -56,7 +56,7 @@ const tableCfg = {
 			editor: true,
 			widthGrow: 2,
 			editable: function (cell) {
-				return cell.getElement().disabled !== true;
+				return !cell.getElement().classList.contains('locked');
 			},
 			editorParams: {
 				allowEmpty: true,
@@ -130,10 +130,12 @@ const tallymin = {
 			tallymin.table.redo();
 		});
 
+		// multirow input focus
 		document.getElementById("multirow-modify-amount").addEventListener("focus", function() {
 			this.select();
 		});
 
+		// multirow input blur
 		document.getElementById("multirow-modify-amount").addEventListener("blur", function() {
 			if (!this.value || this.value.length <= 0) {
 				this.value = 0;
@@ -171,7 +173,11 @@ const tallymin = {
 
 			tallymin.table.getRows().forEach(row => {
 				const [nameCell] = row.getCells().filter(cell => cell.getField() === 'name');
-				nameCell.getElement().disabled = locked;
+				if (locked) {
+					nameCell.getElement().classList.add('locked');
+				} else {
+					nameCell.getElement().classList.remove('locked');
+				}
 			});
 		});
 	}
