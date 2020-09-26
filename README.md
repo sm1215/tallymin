@@ -25,7 +25,6 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - add copy table data button
   - continue working on colors / fonts
   - move lock names button to column header
   - guard number inputs from NaN
@@ -46,3 +45,4 @@ completed changes
   - re-sort rows after score update
   - deselect rows after multirow update
   - autoselect modify amount values when clicked
+  - add ability to copy standings from table
