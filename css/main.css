@@ -1,6 +1,152 @@
+:root {
+
+	/* greens, yellow, reds */
+	/* --bg-color-1: #82FFA3;
+	--bg-color-2: #C8E86D;
+	--bg-color-3: #FFE285;
+	--bg-color-4: #FF9D5C;
+	--bg-color-5: #FE526D; */
+
+	/* yellow / blue */
+	/* --control-bg: #ffffff;
+	--control-hover: #FFE985;
+	--control-text: #FFD724;
+	--table-alt-bg: #3939B3;
+	--table-alt-text: #DCDCFF; */
+
+	/* greys / blues */
+	/* #A2B5C2 */
+	/* #C1D7E6 */
+	/* --control-hover: #6B7780;
+	--control-text: #D6EFFF;
+	--control-bg: #363C40;
+	--table-alt-bg: #D6EFFF; */
+	/* --table-alt-text: ; */
+
+	--light1: #F2FBFF;
+	--light2: #D9F3FF;
+	--vibrant: #3D9CCC;
+	--mid: #4D7E99;
+	--accent: #87D7FF;
+	--grey1: #A1BBCC;
+	--grey2: #515E66;
+	--dark: #293033;
+	
+	--control-bg: var(--light1);
+	--control-text: var(--vibrant);
+	--control-border: var(--light2);
+	--control-hover-bg: var(--light2);
+	--control-hover-text: var(--vibrant);
+	--control-hover-border: var(--grey2);
+	--control-hover-drop-shadow: var(--grey2);
+
+	--table-header-bg: #fff;
+	--table-even-bg: var(--light1);
+	--table-odd-bg: var(--light2);
+	--table-selected-bg: var(--vibrant);
+	--table-selected-text: var(--light1);
+	--table-hover-bg: var(--accent);
+	--table-hover-text: var(--grey2);
+	--table-drop-shadow: var(--grey2);
+
+	--input-bg: var(--light1);
+	--input-text: var(--grey2);
+	--input-border: var(--grey2);
+	--input-active-border: var(--accent-border);
+
+	--base-text: var(--grey2);
+	--base-border: var(--grey2);
+}
+
+/* start color themes */
+body {
+	color: var(--base-text);
+	background-color: var(--base-body-bg);
+}
+
+button {
+	background-color: var(--control-bg);
+	border: 1px solid var(--control-border);
+	color: var(--control-text);
+}
+
+button:hover {
+	background-color: var(--control-hover-bg);
+	border: 1px solid var(--control-hover-border);
+	color: var(--control-hover-text);
+	box-shadow: 2px 2px var(--control-hover-drop-shadow);
+	border-radius: 0;
+}
+
+i {
+	color: var(--control-text);
+}
+
+button:hover i {
+	color: var(--control-hover-text);
+}
+
+.tabulator .tabulator-header .tabulator-col {
+	background-color: var(--table-header-bg);
+}
+
+.tabulator, #intercom {
+	border-color: var(--base-border);
+	box-shadow: 10px 10px var(--table-drop-shadow);
+}
+
+.tabulator-row-even {
+	background-color: var(--table-even-bg);
+}
+
+.tabulator-row-odd {
+	background-color: var(--table-odd-bg);
+}
+
+.tabulator-row.tabulator-selectable:hover, 
+.tabulator .tabulator-header .tabulator-col.tabulator-sortable:hover {
+	color: var(--table-hover-text);
+	background-color: var(--table-hover-bg);
+}
+
+.tabulator-row.tabulator-selected,
+.tabulator-row.tabulator-selected:hover {
+	color: var(--table-selected-text);
+	background-color: var(--table-selected-bg);
+}
+
+.controls input {
+	background-color: var(--control-bg);
+	border: 1px solid var(--control-border);
+	color: var(--control-text);
+}
+
+.controls input:focus {
+	background-color: var(--control-hover-bg);
+	border: 1px solid var(--control-hover-border);
+	color: var(--control-hover-text);
+	box-shadow: 2px 2px var(--control-hover-drop-shadow);
+	border-radius: 0;
+}
+
+.tabulator-row .tabulator-cell.tabulator-editing {
+	background: var(--input-bg);
+	color: var(--input-text);
+	border: 1px solid var(--input-border);
+}
+
+/* end color themes */
+
 .clearfix {
 	float: none;
 	clear: both;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+	outline: none;
 }
 
 .container {
@@ -13,6 +159,12 @@
 
 #tallymin-table, .apply-button {
 	user-select: none;
+}
+
+button {
+	padding: 3px 10px;
+	border-radius: 3px;
+	transition: background-color 0.25s;
 }
 
 input {
@@ -29,9 +181,7 @@ input {
 }
 
 .controls.top {
-	margin-bottom: 20px;
 	padding-bottom: 20px;
-	border-bottom: 1px solid;
 }
 
 .controls.top div {
@@ -39,7 +189,7 @@ input {
 }
 
 .controls.bottom {
-	margin-top: 20px;
+	margin-top: 30px;
 }
 
 .controls.bottom div {
@@ -60,14 +210,18 @@ input {
 	margin: 0;
 }
 
-.instructions {
-	margin-top: 20px;
-	padding-top: 20px;
-	border-top: 1px solid;
+.controls input {
+	width: 100px;
+	border-radius: 3px;
 }
 
-.tabulator-row-odd {
-	background-color: #f5f5f5;
+.tabulator {
+	border-style: solid;
+	border-width: 1px;
+}
+
+.instructions {
+	padding-top: 20px;
 }
 
 .tabulator-cell.locked {
@@ -106,7 +260,8 @@ input {
 	width: 300px;
 	z-index: 2;
 	background: white;
-	border: 1px solid;
+	border-width: 1px;
+	border-style: solid;
 	cursor: pointer;
 }
 
