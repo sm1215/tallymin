@@ -25,10 +25,11 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - refacor how events are are added
-  - find a way to autoselect modify amount values when clicked
+  - add copy table data button
   - continue working on colors / fonts
   - move lock names button to column header
+  - guard number inputs from NaN
+  - refactor how events are are added (should do this before adding more complexity with additional tables)
   - add a table that displays the history
   - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
   - add clear table button
@@ -44,3 +45,4 @@ completed changes
   - add icons for controls
   - re-sort rows after score update
   - deselect rows after multirow update
+  - autoselect modify amount values when clicked

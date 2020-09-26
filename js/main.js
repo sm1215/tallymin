@@ -82,8 +82,36 @@ const tableCfg = {
 			title: "Modify Amount",
 			field: "modifyAmt",
 			headerSort: false,
-			editor: "number",
-			widthGrow: 1
+			widthGrow: 1,
+			// use a custom editor so we can have access to the input element
+			// this gets dynamically created each time the user initiates an edit
+			editor: function(cell, onRendered, success, cancel, editorParams) {
+				const editor = document.createElement('input');
+				editor.setAttribute('type', 'number');
+				editor.style.padding = '4px';
+				editor.style.width = '100%';
+				editor.style.height = '100%';
+    		editor.style.boxSizing = 'border-box';
+
+				let value = cell.getValue();
+				editor.value = parseInt(value, 10);
+
+				onRendered(function(){
+					editor.focus();
+					editor.select();
+				});
+
+				function onSuccess(){
+					let value = editor.value;
+					value = parseInt(value, 10);
+					success(value);
+				}
+		
+				editor.addEventListener("change", onSuccess);
+				editor.addEventListener("blur", onSuccess);
+
+				return editor;
+			}
 		},
 		{
 			field: 'apply',
