@@ -91,8 +91,11 @@ const tableCfg = {
 				score = parseInt(score, 10),
 				modifyAmt = parseInt(modifyAmt, 10);
 
-				const [scoreCell] = cell.getRow().getCells().filter(cell => cell.getField() === 'score');
+				const cells = cell.getRow().getCells();
+				const [scoreCell] = cells.filter(cell => cell.getField() === 'score');
+				const [modifyAmtCell] = cells.filter(cell => cell.getField() === 'modifyAmt');
 				scoreCell.setValue(score + modifyAmt);
+				modifyAmtCell.setValue(0);
 			}
 		}
 	]
@@ -127,9 +130,20 @@ const tallymin = {
 			tallymin.table.redo();
 		});
 
+		document.getElementById("multirow-modify-amount").addEventListener("focus", function() {
+			this.select();
+		});
+
+		document.getElementById("multirow-modify-amount").addEventListener("blur", function() {
+			if (!this.value || this.value.length <= 0) {
+				this.value = 0;
+			}
+		});
+
 		// multirow modify button
 		document.getElementById("multirow-modify-button").addEventListener("click", function() {
-			let modifyAmt = document.getElementById("multirow-modify-amount").value;
+			const amountInput = document.getElementById("multirow-modify-amount");
+			let modifyAmt = amountInput.value;
 			modifyAmt = parseInt(modifyAmt, 10);
 
 			tallymin.table.getSelectedRows().forEach(row => {
@@ -138,6 +152,8 @@ const tallymin = {
 				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
 				scoreCell.setValue(score + modifyAmt);
 			});
+
+			amountInput.value = 0;
 		});
 
 		// multirow delete button
