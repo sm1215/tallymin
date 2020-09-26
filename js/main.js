@@ -55,8 +55,12 @@ const tableCfg = {
 			field: "name",
 			editor: true,
 			widthGrow: 2,
+			formatter: function(cell, formatterParams) {
+				cell.getElement().classList.add(...['fa', 'fas']);
+				return `<span class="content">${cell.getValue()}</span>`;
+			},
 			editable: function (cell) {
-				return !cell.getElement().classList.contains('locked');
+				return cell.getElement().classList.contains('locked');
 			},
 			editorParams: {
 				allowEmpty: true,
@@ -84,7 +88,12 @@ const tableCfg = {
 			headerSort: false,
 			hozAlign: "center",
 			formatter: function(cell, formatterParams) {
-				return `<button class="apply-button">Apply to Row</button>`;
+				return `
+					<button class="apply-button">
+						<i class="fas fa-check"></i>
+						Apply
+					</button>
+				`;
 			},
 			cellClick: function(e, cell) {
 				let {score, modifyAmt} = cell.getData();

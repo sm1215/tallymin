@@ -73,10 +73,16 @@ input {
 .tabulator-cell.locked {
 	position: relative;
 }
+
+.tabulator-cell .content {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
+}
+
 .tabulator-cell.locked::after {
 	position: absolute;
 	right: 20px;
-	content: '(locked)';
+	content: '\f023';
 	text-align: right;
 	opacity: 0.3;
 }

@@ -6,18 +6,30 @@
 		<link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap.css"></link>
 		<link rel="stylesheet" href="./vendor/bootstrap/css/bootstrap-responsive.css"></link>
 		<link rel="stylesheet" href="./vendor/tabulator/css/materialize/tabulator_materialize.min.css">
+		<link rel="stylesheet" href="./vendor/fontawesome/css/all.min.css">
 		<link rel="stylesheet" href="./css/main.css"></link>
 	</head>
 	<body>
 		<div id="tallymin-container" class="container">
 			<div class="controls top">
 				<div class="left">
-					<button id="add-row">Add Row</button>
-					<button id="lock-names">Lock Names</button>
+					<button id="add-row">
+						<i class="fas fa-user-plus"></i>
+						Add
+					</button>
+					<button id="lock-names">
+						Lock Names
+					</button>
 				</div>
 				<div class="right">
-					<button id="history-undo">Undo</button>
-					<button id="history-redo">Redo</button>
+					<button id="history-undo">
+						<i class="fas fa-undo"></i>
+						Undo
+					</button>
+					<button id="history-redo">
+						<i class="fas fa-redo"></i>
+						Redo
+					</button>
 				</div>
 			</div>
 			<div id="tallymin-table"></div>
@@ -29,10 +41,16 @@
 			<div class="controls bottom">
 				<div class="left">
 					<input type="number" id="multirow-modify-amount" value=0>
-					<button id="multirow-modify-button">Modify Scores</button>
+					<button id="multirow-modify-button">
+						<i class="fas fa-check-double"></i>
+						Modify Scores
+					</button>
 				</div>
 				<div class="right">
-					<button id="multirow-delete-button">Delete Rows</button>
+					<button id="multirow-delete-button">
+						<i class="fas fa-user-minus"></i>
+						Delete Rows
+					</button>
 				</div>
 			</div>
 		</div>
