@@ -31,10 +31,36 @@ const tableCfg = {
 		// 	filter: true,
 		// 	columns: true,
 		// },
+	clipboardCopyConfig: {
+		columnHeaders: false,
+		columnGrous: false
+	},
 	clipboard: true,
-	clipboardCopied:function(clipboard){
-		console.log("copied", clipboard);
+	clipboardCopied: function() {
 		tallymin.intercom('Standings successfully copied');
+	},
+	clipboardCopyFormatter:function(type, tableData){
+		//type - a string representing the type of the content, either "plain" or "html"
+		//output - the output string about to be passed to the clipboard
+		if (type != 'plain') {
+			return;
+		}
+		const entriesWithHeaders = tableData.split(/[\s]+/).filter(entry => entry.length > 0);
+		// remove the headers: [Name, Score]
+		const entries = entriesWithHeaders.slice(2);
+
+		const columnCount = 2;
+		const output = entries.reduce((prev, cur, index) => {
+			
+			const addToken = 
+				index % columnCount === 0 ?
+				': ' :
+				'\n';
+
+			return `${prev}${cur}${addToken}`;
+		}, '');
+
+		return output;
 	},
 	columns: [
 		{
