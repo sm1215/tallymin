@@ -86,6 +86,10 @@ button:hover i {
 	color: var(--control-hover-text);
 }
 
+.brand i {
+	color: var(--base-text);
+}
+
 .tabulator .tabulator-header .tabulator-col {
 	background-color: var(--table-header-bg);
 }
@@ -156,6 +160,47 @@ button:focus {
 
 .container {
 	margin: 50px auto 0 auto;
+}
+
+.brand {
+	position: relative;
+	top: 5px;
+	left: 10px;
+	overflow: hidden;
+}
+
+#brand-image {
+	height: 50px;
+	width: 50px;
+	background-image: url('../images/single-banana.png');
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: white;
+	cursor: pointer;
+	position: relative;
+	z-index: 2;
+}
+
+#brand-image:hover {
+	background-image: url('../images/multi-banana-resized.png');
+}
+
+.brand h1 {
+	position: absolute;
+	font-size: 10px;
+	left: -100px;
+	top: 0;
+	z-index: 1;
+	transition: left 0.25s;
+}
+
+#brand-image:hover + h1 {
+	left: 60px;
+}
+
+#sound {
+	display: none;
 }
 
 .tabulator .tabulator-header .tabulator-col[tabulator-field="rowSelection"] {

@@ -179,6 +179,7 @@ const tallymin = {
 			tableCfg.data = tableData;
 		}
 		this.table = new Tabulator(this.containerSelector, tableCfg);
+		this.initSound();
 		// enable copying
 		tallymin.table.copyToClipboard('all');
 
@@ -254,6 +255,7 @@ const tallymin = {
 			});
 		});
 
+		// close intercom on click
 		document.getElementById('intercom').addEventListener('click', function() {
 			this.classList.remove('show');
 			intercom.innerHTML = '';
@@ -262,6 +264,25 @@ const tallymin = {
 				clearTimeout(tallymin.intercomTimer);
 			}
 		});
+
+		// icon hover play
+		document.getElementById('brand-image').addEventListener('mouseover', function() {
+			window.sound.unMute();
+			window.sound.setVolume(100);
+			window.sound.seekTo(5);
+			window.sound.playVideo();
+		});
+
+		document.getElementById('brand-image').addEventListener('mouseout', function() {
+			window.sound.stopVideo();
+		});
+	},
+	initSound: function() {
+		var tag = document.createElement('script');
+		tag.id = 'iframe-demo';
+		tag.src = 'https://www.youtube.com/iframe_api';
+		var firstScriptTag = document.getElementsByTagName('script')[0];
+		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 	},
 	sortScoreColumn: function() {
 		const sorters = tallymin.table.getSorters();
