@@ -108,7 +108,7 @@ const tableCfg = {
 			output = `${output}${name}:${spaces}${score}\n`;
 		});
 
-		return output;
+		return `\`\`\`\n${output}\`\`\``;
 	},
 	columns: [
 		{
