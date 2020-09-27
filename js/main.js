@@ -65,32 +65,48 @@ const tableCfg = {
 		// },
 	clipboardCopyConfig: {
 		columnHeaders: false,
-		columnGrous: false
+		columnGroups: false
 	},
 	clipboard: true,
 	clipboardCopied: function() {
 		tallymin.intercom('Standings successfully copied');
 	},
 	clipboardCopyFormatter:function(type, tableData){
-		//type - a string representing the type of the content, either "plain" or "html"
-		//output - the output string about to be passed to the clipboard
-		if (type != 'plain') {
+		// only want to copy for plain text formats
+		if (type !== 'plain') {
 			return;
 		}
-		const entriesWithHeaders = tableData.split(/[\s]+/).filter(entry => entry.length > 0);
-		// remove the headers: [Name, Score]
-		const entries = entriesWithHeaders.slice(2);
 
-		const columnCount = 2;
-		const output = entries.reduce((prev, cur, index) => {
-			
-			const addToken = 
-				index % columnCount === 0 ?
-				': ' :
-				'\n';
+		const entriesWithHeaders = tableData.split('\n').filter(entry => entry.length > 0);
+		let rows = entriesWithHeaders
+			.slice(1) // remove headers
+			.map(row => 
+				row
+					.split(`${tallymin.cellDelimiter}`) // split name and score cells
+					.map(cell => cell.trim() // trim each cell
+				)
+			);
 
-			return `${prev}${cur}${addToken}`;
-		}, '');
+		// to create the appropriate spacing for column alignment between names and scores
+		// find the longest name and use that to determine how many spaces each row needs
+		const names = rows.map(row => row[0]);
+		const {length: longestNameLength} = names.reduce(
+			(prev, cur) => prev.length > cur.length ? prev : cur
+		);
+		const findDifference = (({length}) => longestNameLength - length);
+
+		let output = '';
+		rows.forEach(([name, score]) => {
+			// always give at least one space
+			let spaceCount = 1 + findDifference(name);
+			let spaces = '';
+
+			for (let i = 0; i < spaceCount; i++) {
+				spaces = `${spaces} `;
+			}
+
+			output = `${output}${name}:${spaces}${score}\n`;
+		});
 
 		return output;
 	},
@@ -119,8 +135,11 @@ const tableCfg = {
 			field: "name",
 			widthGrow: 2,
 			editor: 'input',
-			editable: function (cell) {
+			editable: function(cell) {
 				return !cell.getElement().classList.contains('locked');
+			},
+			accessorClipboard: function(value, data, type, params, column) {
+				return `${value.trim()}${tallymin.cellDelimiter}`;
 			}
 		},
 		{
@@ -131,6 +150,9 @@ const tableCfg = {
 			widthGrow: 1,
 			cellEdited: function(e, cell) {
 				tallymin.sortScoreColumn();
+			},
+			accessorClipboard: function(value, data, type, params, column) {
+				return `${value}`.trim();
 			}
 		},
 		{
@@ -145,33 +167,7 @@ const tableCfg = {
 			editor: numericEditor,
 			editorParams: {
 				autoSelect: true
-			},
-			// function(cell, onRendered, success, cancel, editorParams) {
-			// 	const editor = document.createElement('input');
-			// 	editor.setAttribute('type', 'number');
-			// 	editor.style.padding = '4px';
-			// 	editor.style.width = '100%';
-			// 	editor.style.height = '100%';
-    	// 	editor.style.boxSizing = 'border-box';
-
-			// 	editor.value = Number(cell.getValue());
-
-			// 	onRendered(function(){
-			// 		editor.focus();
-			// 		editor.select();
-			// 	});
-
-			// 	function onSuccess(){
-			// 		success(
-			// 			Number(editor.value)
-			// 		);
-			// 	}
-		
-			// 	editor.addEventListener("change", onSuccess);
-			// 	editor.addEventListener("blur", onSuccess);
-
-			// 	return editor;
-			// }
+			}
 		},
 		{
 			field: 'apply',
@@ -210,6 +206,7 @@ const tallymin = {
 	namesLocked: false,
 	intercomDuration: 3, // seconds
 	intercomTimer: null,
+	cellDelimiter: '::',
 	init: function() {
 		if (TEST_MODE) {
 			tableCfg.data = tableData;
