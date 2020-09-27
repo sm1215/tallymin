@@ -25,7 +25,6 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - refactor how events are are added (should do this before adding more complexity with additional tables)
   - add a table that displays the history
   - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
   - add clear table button
@@ -46,3 +45,4 @@ completed changes
   - added a first theme for colors
   - there's not a way to add just a button to column headers without sacrificing the visibility of it and hiding it under a small menu icon. leaving "lock names" as an easier to reach button.
   - guard number inputs from NaN
+  - refactored events into a combination of configuration and storage into handlers object for organization

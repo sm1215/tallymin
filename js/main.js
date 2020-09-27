@@ -207,107 +207,78 @@ const tallymin = {
 	intercomDuration: 3, // seconds
 	intercomTimer: null,
 	cellDelimiter: '::',
+	events: [
+		{
+			selector: '#add-row',
+			type: 'click',
+			handler: 'addRow'
+		},
+		{
+			selector: '#history-undo',
+			type: 'click',
+			handler: 'historyUndo'
+		},
+		{
+			selector: '#history-redo',
+			type: 'click',
+			handler: 'historyRedo'
+		},
+		{
+			selector: '#multirow-modify-amount',
+			type: 'focus',
+			handler: 'modifySelectedFocus'
+		},
+		{
+			selector: '#multirow-modify-amount',
+			type: 'blur',
+			handler: 'modifySelectedBlur'
+		},
+		{
+			selector: '#multirow-modify-button',
+			type: 'click',
+			handler: 'modifySelectedRows'
+		},
+		{
+			selector: '#multirow-delete-button',
+			type: 'click',
+			handler: 'deleteSelectedRows'
+		},
+		{
+			selector: '#lock-names',
+			type: 'click',
+			handler: 'lockNameCells'
+		},
+		{
+			selector: '#intercom',
+			type: 'click',
+			handler: 'closeIntercom'
+		},
+		{
+			selector: '#brand-image',
+			type: 'mouseover',
+			handler: 'playSound'
+		},
+		{
+			selector: '#brand-image',
+			type: 'mouseout',
+			handler: 'stopSound'
+		}
+	],
 	init: function() {
 		if (TEST_MODE) {
 			tableCfg.data = tableData;
 		}
 		this.table = new Tabulator(this.containerSelector, tableCfg);
 		this.initSound();
+		this.setupEvents();
 		// enable copying
 		tallymin.table.copyToClipboard('all');
-
-		// Add row on "Add Row" button click
-		document.getElementById("add-row").addEventListener("click", function(ev) {
-			tallymin.table.addRow({
-				name: 'Team name',
-				score: 0,
-				modifyAmt: 0
+	},
+	setupEvents: function() {
+		this.events.forEach(({selector, type, handler}) => {
+			document.querySelectorAll(selector).forEach(node => {
+				node.addEventListener(type, this.handlers[handler]);
 			});
-		});
-		
-		// undo button
-		document.getElementById("history-undo").addEventListener("click", function(){
-			tallymin.table.undo();
-		});
-
-		// redo button
-		document.getElementById("history-redo").addEventListener("click", function(){
-			tallymin.table.redo();
-		});
-
-		// multirow input focus
-		document.getElementById("multirow-modify-amount").addEventListener("focus", function() {
-			this.select();
-		});
-
-		// multirow input blur
-		document.getElementById("multirow-modify-amount").addEventListener("blur", function() {
-			if (!this.value || this.value.length <= 0) {
-				this.value = 0;
-			}
-		});
-
-		// multirow modify button
-		document.getElementById("multirow-modify-button").addEventListener("click", function() {
-			const amountInput = document.getElementById("multirow-modify-amount");
-			let modifyAmt = amountInput.value;
-			modifyAmt = parseInt(modifyAmt, 10);
-
-			tallymin.table.getSelectedRows().forEach(row => {
-				let {score} = row.getData();
-				score = parseInt(score, 10);
-				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
-				scoreCell.setValue(score + modifyAmt);
-			});
-
-			amountInput.value = 0;
-			tallymin.deselectAllRows();
-			tallymin.sortScoreColumn();
-		});
-
-		// multirow delete button
-		document.getElementById("multirow-delete-button").addEventListener("click", function() {
-			tallymin.table.getSelectedRows().forEach(row => {
-				row.delete();
-			});
-		});
-
-		// lock names button
-		document.getElementById("lock-names").addEventListener("click", function(ev) {
-			const locked = tallymin.namesLocked = !tallymin.namesLocked;
-			const buttonText = locked ? 'Unlock Names' : 'Lock Names';
-			ev.target.textContent = buttonText;
-
-			tallymin.table.getRows().forEach(row => {
-				const [nameCell] = row.getCells().filter(cell => cell.getField() === 'name');
-				if (locked) {
-					nameCell.getElement().classList.add('locked');
-				} else {
-					nameCell.getElement().classList.remove('locked');
-				}
-			});
-		});
-
-		// close intercom on click
-		document.getElementById('intercom').addEventListener('click', function() {
-			this.classList.remove('show');
-			intercom.innerHTML = '';
-
-			if (tallymin.intercomTimer) {
-				clearTimeout(tallymin.intercomTimer);
-			}
-		});
-
-		// icon hover play
-		document.getElementById('brand-image').addEventListener('mouseover', function() {
-			window.sound.unMute();
-			window.sound.setVolume(100);
-			window.sound.seekTo(5);
-			window.sound.playVideo();
-		});
-
-		document.getElementById('brand-image').addEventListener('mouseout', function() {
-			window.sound.stopVideo();
 		});
 	},
 	initSound: function() {
@@ -350,6 +321,81 @@ const tallymin = {
 			intercom.classList.remove('show');
 			intercom.innerHTML = '';
 		}, (tallymin.intercomDuration + 1) * 1000);
+	},
+	handlers: {
+		addRow: function() {
+			tallymin.table.addRow({
+				name: 'Team name',
+				score: 0,
+				modifyAmt: 0
+			});
+		},
+		historyUndo: function() {
+			tallymin.table.undo();
+		},
+		historyRedo: function() {
+			tallymin.table.redo();
+		},
+		modifySelectedFocus: function() {
+			this.select();
+		},
+		modifySelectedBlur: function() {
+			if (!this.value || this.value.length <= 0) {
+				this.value = 0;
+			}
+		},
+		modifySelectedRows: function() {
+			const amountInput = document.getElementById("multirow-modify-amount");
+			let modifyAmt = amountInput.value;
+			modifyAmt = parseInt(modifyAmt, 10);
+
+			tallymin.table.getSelectedRows().forEach(row => {
+				let {score} = row.getData();
+				score = parseInt(score, 10);
+				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
+				scoreCell.setValue(score + modifyAmt);
+			});
+
+			amountInput.value = 0;
+			tallymin.deselectAllRows();
+			tallymin.sortScoreColumn();
+		},
+		deleteSelectedRows: function() {
+			tallymin.table.getSelectedRows().forEach(row => {
+				row.delete();
+			});
+		},
+		lockNameCells: function() {
+			const locked = tallymin.namesLocked = !tallymin.namesLocked;
+			const buttonText = locked ? 'Unlock Names' : 'Lock Names';
+			this.textContent = buttonText;
+
+			tallymin.table.getRows().forEach(row => {
+				const [nameCell] = row.getCells().filter(cell => cell.getField() === 'name');
+				if (locked) {
+					nameCell.getElement().classList.add('locked');
+				} else {
+					nameCell.getElement().classList.remove('locked');
+				}
+			});
+		},
+		closeIntercom: function() {
+			this.classList.remove('show');
+			intercom.innerHTML = '';
+
+			if (tallymin.intercomTimer) {
+				clearTimeout(tallymin.intercomTimer);
+			}
+		},
+		playSound: function() {
+			window.sound.unMute();
+			window.sound.setVolume(100);
+			window.sound.seekTo(5);
+			window.sound.playVideo();
+		},
+		stopSound: function() {
+			window.sound.stopVideo();
+		}
 	}
 };
 
