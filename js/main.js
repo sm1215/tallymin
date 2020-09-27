@@ -21,7 +21,39 @@ const tableData = [
 		score: 809,
 		modifyAmt: 1000
 	}
-]
+];
+
+const numericEditor = function(cell, onRendered, success, cancel, editorParams) {
+
+	console.log("editorParams", editorParams);
+
+	const editor = document.createElement('input');
+	editor.setAttribute('type', 'number');
+	editor.style.padding = '4px';
+	editor.style.width = '100%';
+	editor.style.height = '100%';
+	editor.style.boxSizing = 'border-box';
+
+	editor.value = Number(cell.getValue());
+
+	onRendered(function(){
+		editor.focus();
+		if (editorParams.autoSelect) {
+			editor.select();
+		}
+	});
+
+	function onSuccess(){
+		success(
+			Number(editor.value)
+		);
+	}
+
+	editor.addEventListener("change", onSuccess);
+	editor.addEventListener("blur", onSuccess);
+
+	return editor;
+}
 
 const tableCfg = {
 	history: true,
@@ -95,7 +127,7 @@ const tableCfg = {
 			title: "Score",
 			field: "score",
 			sorter: "number",
-			editor: "number",
+			editor: numericEditor,
 			widthGrow: 1,
 			cellEdited: function(e, cell) {
 				tallymin.sortScoreColumn();
@@ -109,33 +141,37 @@ const tableCfg = {
 			clipboard: false,
 			// use a custom editor so we can have access to the input element
 			// this gets dynamically created each time the user initiates an edit
-			editor: function(cell, onRendered, success, cancel, editorParams) {
-				const editor = document.createElement('input');
-				editor.setAttribute('type', 'number');
-				editor.style.padding = '4px';
-				editor.style.width = '100%';
-				editor.style.height = '100%';
-    		editor.style.boxSizing = 'border-box';
+			// the main reason for this is so we can use element.select() on entry
+			editor: numericEditor,
+			editorParams: {
+				autoSelect: true
+			},
+			// function(cell, onRendered, success, cancel, editorParams) {
+			// 	const editor = document.createElement('input');
+			// 	editor.setAttribute('type', 'number');
+			// 	editor.style.padding = '4px';
+			// 	editor.style.width = '100%';
+			// 	editor.style.height = '100%';
+    	// 	editor.style.boxSizing = 'border-box';
 
-				let value = cell.getValue();
-				editor.value = parseInt(value, 10);
+			// 	editor.value = Number(cell.getValue());
 
-				onRendered(function(){
-					editor.focus();
-					editor.select();
-				});
+			// 	onRendered(function(){
+			// 		editor.focus();
+			// 		editor.select();
+			// 	});
 
-				function onSuccess(){
-					let value = editor.value;
-					value = parseInt(value, 10);
-					success(value);
-				}
+			// 	function onSuccess(){
+			// 		success(
+			// 			Number(editor.value)
+			// 		);
+			// 	}
 		
-				editor.addEventListener("change", onSuccess);
-				editor.addEventListener("blur", onSuccess);
+			// 	editor.addEventListener("change", onSuccess);
+			// 	editor.addEventListener("blur", onSuccess);
 
-				return editor;
-			}
+			// 	return editor;
+			// }
 		},
 		{
 			field: 'apply',

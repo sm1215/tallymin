@@ -25,8 +25,6 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - move lock names button to column header
-  - guard number inputs from NaN
   - refactor how events are are added (should do this before adding more complexity with additional tables)
   - add a table that displays the history
   - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
@@ -46,3 +44,5 @@ completed changes
   - autoselect modify amount values when clicked
   - add ability to copy standings from table
   - added a first theme for colors
+  - there's not a way to add just a button to column headers without sacrificing the visibility of it and hiding it under a small menu icon. leaving "lock names" as an easier to reach button.
+  - guard number inputs from NaN
