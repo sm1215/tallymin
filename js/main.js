@@ -1,28 +1,55 @@
 const TEST_MODE = true;
+const ENABLE_SOUND = false;
 
 const tableData = [
 	{
+		id: 1,
 		name: 'Sam',
 		score: -10,
 		modifyAmt: -10
 	},
 	{
+		id: 2,
 		name: 'Amy',
 		score: 50,
 		modifyAmt: 23
 	},
 	{
+		id: 3,
 		name: 'Shane',
 		score: 5,
 		modifyAmt: 0
 	},
 	{
+		id: 4,
 		name: 'Faith',
 		score: 809,
 		modifyAmt: 1000
 	}
 ];
 
+const quickscoresData = [
+	{
+		id: 1,
+		amount: 10
+	},
+	{
+		id: 2,
+		amount: 20
+	},
+	{
+		id: 3,
+		amount: 30
+	},
+	{
+		id: 4,
+		amount: 40
+	}
+]
+
+// use a custom editor so we can have access to the input element
+// this gets dynamically created each time the user initiates an edit
+// the main reason for this is so we can use element.select() on entry
 const numericEditor = function(cell, onRendered, success, cancel, editorParams) {
 
 	console.log("editorParams", editorParams);
@@ -156,14 +183,40 @@ const tableCfg = {
 			}
 		},
 		{
-			title: "Modify Amount",
+			title: 'Quick',
+			field: 'quickScore',
+			headerSort: false,
+			widthGrow: 2,
+			clipboard: false,
+			editor: false,
+			formatter: function(cell, formatterParams) {
+				if (!tallymin.quickscores) {
+					return;
+				}
+				const quickscoreRows = tallymin.quickscores.getRows() || [];
+
+				const mainTableIndex = cell.getRow().getIndex();
+				// offset the readable value by one so it matches the quickscores row numbering
+				const createButton = (mainTableIndex, quickscoreIndex) => `
+					<button class='quickscores-button' 
+						data-quickscores-index='${quickscoreIndex}'
+						data-mainTable-index='${mainTableIndex}'
+						>
+						${quickscoreIndex}
+					</button>
+				`;
+				return quickscoreRows.reduce((acc, currentRow, index) => {
+					const quickscoreIndex = currentRow.getIndex();
+					return `${acc}${createButton(mainTableIndex, quickscoreIndex)}`;
+				}, '');
+			}
+		},
+		{
+			title: "Manual",
 			field: "modifyAmt",
 			headerSort: false,
 			widthGrow: 1,
 			clipboard: false,
-			// use a custom editor so we can have access to the input element
-			// this gets dynamically created each time the user initiates an edit
-			// the main reason for this is so we can use element.select() on entry
 			editor: numericEditor,
 			editorParams: {
 				autoSelect: true
@@ -200,16 +253,56 @@ const tableCfg = {
 	]
 };
 
+const quickscoresCfg = {
+	history: true,
+	layout: "fitColumns",
+	columns: [
+		{
+			field: 'index',
+			formatter: "rownum",
+			hozAlign: "center",
+			headerSort: false,
+			editor: 'number',
+			width: 50
+		},
+		{
+			title: "Amount",
+			field: "amount",
+			headerSort: false,
+			widthGrow: 1,
+			clipboard: false,
+			editor: numericEditor,
+			editorParams: {
+				autoSelect: true
+			}
+		}
+	]
+}
+
 const tallymin = {
 	containerSelector: '#tallymin-table',
+	quickscoresSelector: '#quickscores-table',
 	table: null,
+	quickscores: null,
 	namesLocked: false,
 	intercomDuration: 3, // seconds
 	intercomTimer: null,
 	cellDelimiter: '::',
+	rowDefaults: {
+		table: {
+			id: null,
+			name: 'Team name',
+			score: 0,
+			modifyAmt: 0
+		},
+		quickscores: {
+			id: null,
+			amount: 0
+		}
+	},
 	events: [
 		{
-			selector: '#add-row',
+			selector: '.add-row',
 			type: 'click',
 			handler: 'addRow'
 		},
@@ -262,17 +355,31 @@ const tallymin = {
 			selector: '#brand-image',
 			type: 'mouseout',
 			handler: 'stopSound'
+		},
+		{
+			selector: '.quickscores-button',
+			type: 'click',
+			handler: 'applyQuickScore'
 		}
 	],
 	init: function() {
 		if (TEST_MODE) {
 			tableCfg.data = tableData;
+			quickscoresCfg.data = quickscoresData;
 		}
+
+		// setup quickscores first so rows are available to populate the regular table
+		// this only really matters during test mode but doesn't hurt anything either
+		// so might as well leverage the benefit
+		this.quickscores = new Tabulator(this.quickscoresSelector, quickscoresCfg);
 		this.table = new Tabulator(this.containerSelector, tableCfg);
-		this.initSound();
 		this.setupEvents();
 		// enable copying
-		tallymin.table.copyToClipboard('all');
+		this.table.copyToClipboard('all');
+		
+		if (!ENABLE_SOUND) {
+			this.initSound();
+		}
 	},
 	setupEvents: function() {
 		this.events.forEach(({selector, type, handler}) => {
@@ -323,12 +430,22 @@ const tallymin = {
 		}, (tallymin.intercomDuration + 1) * 1000);
 	},
 	handlers: {
+		applyQuickScore: function() {
+			const {quickscoresIndex, maintableIndex} = this.dataset;
+			const {amount} = tallymin.quickscores
+				.getRows()[quickscoresIndex - 1]
+				.getData();
+			const [scoreCell] = tallymin.table
+				.getRows()[maintableIndex - 1]
+				.getCells()
+				.filter(cell => cell.getField() === 'score');
+			const currentScore = scoreCell.getValue();
+			scoreCell.setValue(currentScore + amount);
+		},
 		addRow: function() {
-			tallymin.table.addRow({
-				name: 'Team name',
-				score: 0,
-				modifyAmt: 0
-			});
+			const {tableType} = this.dataset;
+			const rowDefaults = tallymin.rowDefaults[tableType];
+			tallymin[tableType].addRow(rowDefaults);
 		},
 		historyUndo: function() {
 			tallymin.table.undo();
@@ -388,13 +505,19 @@ const tallymin = {
 			}
 		},
 		playSound: function() {
-			window.sound.unMute();
-			window.sound.setVolume(100);
-			window.sound.seekTo(5);
-			window.sound.playVideo();
+			// let sound fail silently
+			try {
+				window.sound.unMute();
+				window.sound.setVolume(100);
+				window.sound.seekTo(5);
+				window.sound.playVideo();
+			} catch (e) {}
 		},
 		stopSound: function() {
-			window.sound.stopVideo();
+			// let sound fail silently
+			try {
+				window.sound.stopVideo();
+			} catch (e) {}
 		}
 	}
 };

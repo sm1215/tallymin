@@ -17,48 +17,69 @@
 				<i class="fas fa-music"></i>
 			</h1>
 		</div>
-		<div id="tallymin-container" class="container">
-			<div id="intercom"></div>
-			<div class="controls top">
-				<div class="left">
-					<button id="add-row">
-						<i class="fas fa-user-plus"></i>
-						Add
-					</button>
-					<button id="lock-names">
-						Lock Names
-					</button>
+		<div class="main-container">
+			<div id="tallymin-container" class="table-container">
+				<div id="intercom"></div>
+				<div class="controls top">
+					<div class="left">
+						<button class="add-row" data-table-type="table">
+							<i class="fas fa-user-plus"></i>
+							Add
+						</button>
+						<button id="lock-names">
+							Lock Names
+						</button>
+					</div>
+					<div class="right">
+						<button id="history-undo">
+							<i class="fas fa-undo"></i>
+							Undo
+						</button>
+						<button id="history-redo">
+							<i class="fas fa-redo"></i>
+							Redo
+						</button>
+					</div>
 				</div>
-				<div class="right">
-					<button id="history-undo">
-						<i class="fas fa-undo"></i>
-						Undo
-					</button>
-					<button id="history-redo">
-						<i class="fas fa-redo"></i>
-						Redo
-					</button>
+				<div id="tallymin-table" data-table-type="table"></div>
+				<div class="controls bottom">
+					<div class="left">
+						<input type="number" id="multirow-modify-amount" value=0>
+						<button id="multirow-modify-button">
+							<i class="fas fa-check-double"></i>
+							Modify Selected
+						</button>
+					</div>
+					<div class="right">
+						<button id="multirow-delete-button">
+							<i class="fas fa-user-minus"></i>
+							Delete Rows
+						</button>
+					</div>
+				</div>
+				<div class="instructions">
+					<h4><i class="fas fa-copy"></i> Copy Results</h4>
+					<p>Click into an editable field and press Ctrl+C / Cmd+C to copy all names and scores to your clipboard. The output will be wrapped in triple backticks which can help with formatting when pasting into most messenger / chat programs. You can paste the whole output into discord for example.</p>
 				</div>
 			</div>
-			<div id="tallymin-table"></div>
-			<div class="controls bottom">
-				<div class="left">
-					<input type="number" id="multirow-modify-amount" value=0>
-					<button id="multirow-modify-button">
-						<i class="fas fa-check-double"></i>
-						Modify Selected
-					</button>
+			<div id="quickscores-container" class="table-container">
+				<div class="controls top">
+					<div class="left">
+						<button class="add-row" data-table-type="quickscores">
+							<i class="fas fa-user-plus"></i>
+							Add
+						</button>
+						<button class="clear">
+							<i class="fas fa-ban"></i>
+							Clear
+						</button>
+					</div>
 				</div>
-				<div class="right">
-					<button id="multirow-delete-button">
-						<i class="fas fa-user-minus"></i>
-						Delete Rows
-					</button>
+				<div id="quickscores-table" data-table-type="quickscores"></div>
+				<div class="instructions">
+					<h4>Quick Scores</h4>
+					<p>Rows added here correspond to the Quick column in the main table. Press the matching button to add the Amount listed here.</p>
 				</div>
-			</div>
-			<div class="instructions">
-				<h4><i class="fas fa-copy"></i> Copy Results</h4>
-				<p>Click into an editable field and press Ctrl+C / Cmd+C to copy all names and scores to your clipboard. The output will be wrapped in triple backticks which can help with formatting when pasting into most messenger / chat programs. You can paste the whole output into discord for example.</p>
 			</div>
 		</div>
 		<iframe preload="auto" id="sound" type="text/html" width="320" height="195" 

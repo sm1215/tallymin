@@ -25,9 +25,12 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - add a table that displays the history
-  - add a table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
-  - add clear table button
+  - add quicksorts events when a new row is added to main table
+  - add quicksorts buttons and events when a new row is added to quicksorts table
+  - hookup clear button functionality, add one to main table
+  - add delete last row button to quickscores
+  - allow the quickscores table to hide on the side of the screen under a tab
+  - add a table that displays the history, there's a tradeoff here with how much screen real estate we have available and how much value this would add. might not add this
   - persist table state and history through refresh
   - migrate instructions to the page itself
   - adjust styles to better fit mobile portrait
@@ -46,3 +49,4 @@ completed changes
   - there's not a way to add just a button to column headers without sacrificing the visibility of it and hiding it under a small menu icon. leaving "lock names" as an easier to reach button.
   - guard number inputs from NaN
   - refactored events into a combination of configuration and storage into handlers object for organization
+  - added the quick sores table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
