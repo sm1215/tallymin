@@ -1,5 +1,5 @@
 const TEST_MODE = true;
-const ENABLE_SOUND = false;
+const ENABLE_SOUND = true;
 
 const tableData = [
 	{
@@ -51,9 +51,6 @@ const quickscoresData = [
 // this gets dynamically created each time the user initiates an edit
 // the main reason for this is so we can use element.select() on entry
 const numericEditor = function(cell, onRendered, success, cancel, editorParams) {
-
-	console.log("editorParams", editorParams);
-
 	const editor = document.createElement('input');
 	editor.setAttribute('type', 'number');
 	editor.style.padding = '4px';
@@ -381,8 +378,11 @@ const tallymin = {
 			this.initSound();
 		}
 	},
-	setupEvents: function() {
-		this.events.forEach(({selector, type, handler}) => {
+	setupEvents: function(events = []) {
+		if (events.length <= 0) {
+			events = this.events;
+		}
+		events.forEach(({selector, type, handler}) => {
 			document.querySelectorAll(selector).forEach(node => {
 				node.addEventListener(type, this.handlers[handler]);
 			});
@@ -445,7 +445,11 @@ const tallymin = {
 		addRow: function() {
 			const {tableType} = this.dataset;
 			const rowDefaults = tallymin.rowDefaults[tableType];
+			rowDefaults.id = tallymin.table.getRows().length + 1;
 			tallymin[tableType].addRow(rowDefaults);
+			tallymin.setupEvents([
+				...tallymin.events.filter(e => e.handler === 'applyQuickScore')
+			]);
 		},
 		historyUndo: function() {
 			tallymin.table.undo();
