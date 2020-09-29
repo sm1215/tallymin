@@ -357,6 +357,11 @@ const tallymin = {
 			selector: '.quickscores-button',
 			type: 'click',
 			handler: 'applyQuickScore'
+		},
+		{
+			selector: '.clear-table',
+			type: 'click',
+			handler: 'clearTable'
 		}
 	],
 	init: function() {
@@ -494,6 +499,13 @@ const tallymin = {
 			tallymin.mainTable.getSelectedRows().forEach(row => {
 				row.delete();
 			});
+		},
+		clearTable: function() {
+			const {tableType} = this.dataset;
+			tallymin[tableType].clearData();
+			if (tableType === 'quickscores') {
+				tallymin.mainTable.setColumns(mainTableCfg.columns);
+			}
 		},
 		lockNameCells: function() {
 			const locked = tallymin.namesLocked = !tallymin.namesLocked;
