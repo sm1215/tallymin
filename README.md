@@ -25,7 +25,6 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - add quicksorts buttons and events when a new row is added to quicksorts table
   - hookup clear button functionality, add one to main table
   - add delete last row button to quickscores
   - allow the quickscores table to hide on the side of the screen under a tab
@@ -50,3 +49,4 @@ completed changes
   - refactored events into a combination of configuration and storage into handlers object for organization
   - added the quick sores table for quick repeatable scores - round 1 = 10, round 2 = 30, etc
   - add quicksorts events when a new row is added to main table
+  - add quicksorts buttons and events when a new row is added to quicksorts table

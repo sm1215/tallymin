@@ -1,7 +1,7 @@
 const TEST_MODE = true;
 const ENABLE_SOUND = true;
 
-const tableData = [
+const mainTableData = [
 	{
 		id: 1,
 		name: 'Sam',
@@ -79,7 +79,7 @@ const numericEditor = function(cell, onRendered, success, cancel, editorParams) 
 	return editor;
 }
 
-const tableCfg = {
+const mainTableCfg = {
 	history: true,
 	layout: "fitColumns",
 	// persistence: {
@@ -279,14 +279,14 @@ const quickscoresCfg = {
 const tallymin = {
 	containerSelector: '#tallymin-table',
 	quickscoresSelector: '#quickscores-table',
-	table: null,
+	mainTable: null,
 	quickscores: null,
 	namesLocked: false,
 	intercomDuration: 3, // seconds
 	intercomTimer: null,
 	cellDelimiter: '::',
 	rowDefaults: {
-		table: {
+		mainTable: {
 			id: null,
 			name: 'Team name',
 			score: 0,
@@ -361,7 +361,7 @@ const tallymin = {
 	],
 	init: function() {
 		if (TEST_MODE) {
-			tableCfg.data = tableData;
+			mainTableCfg.data = mainTableData;
 			quickscoresCfg.data = quickscoresData;
 		}
 
@@ -369,10 +369,10 @@ const tallymin = {
 		// this only really matters during test mode but doesn't hurt anything either
 		// so might as well leverage the benefit
 		this.quickscores = new Tabulator(this.quickscoresSelector, quickscoresCfg);
-		this.table = new Tabulator(this.containerSelector, tableCfg);
+		this.mainTable = new Tabulator(this.containerSelector, mainTableCfg);
 		this.setupEvents();
 		// enable copying
-		this.table.copyToClipboard('all');
+		this.mainTable.copyToClipboard('all');
 		
 		if (!ENABLE_SOUND) {
 			this.initSound();
@@ -396,19 +396,19 @@ const tallymin = {
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 	},
 	sortScoreColumn: function() {
-		const sorters = tallymin.table.getSorters();
+		const sorters = tallymin.mainTable.getSorters();
 		// only sort the score column if it is already being sorted by the user
 		// repeat the same sort direction
 		const sort = sorters.filter(entry => entry.field === 'score')[0];
 		if (sort) {
-			tallymin.table.setSort([
+			tallymin.mainTable.setSort([
 				{ column: 'score', dir: sort.dir }
 			]);
 		}
 	},
 	deselectAllRows: function() {
-		tallymin.table.getSelectedRows().forEach(row => {
-			tallymin.table.deselectRow(row);
+		tallymin.mainTable.getSelectedRows().forEach(row => {
+			tallymin.mainTable.deselectRow(row);
 		});
 	},
 	intercom: function(message = '') {
@@ -435,7 +435,7 @@ const tallymin = {
 			const {amount} = tallymin.quickscores
 				.getRows()[quickscoresIndex - 1]
 				.getData();
-			const [scoreCell] = tallymin.table
+			const [scoreCell] = tallymin.mainTable
 				.getRows()[maintableIndex - 1]
 				.getCells()
 				.filter(cell => cell.getField() === 'score');
@@ -445,17 +445,26 @@ const tallymin = {
 		addRow: function() {
 			const {tableType} = this.dataset;
 			const rowDefaults = tallymin.rowDefaults[tableType];
-			rowDefaults.id = tallymin.table.getRows().length + 1;
+			rowDefaults.id = tallymin[tableType].getRows().length + 1;
 			tallymin[tableType].addRow(rowDefaults);
-			tallymin.setupEvents([
-				...tallymin.events.filter(e => e.handler === 'applyQuickScore')
-			]);
+
+			// need to add new event handlers for a new row of buttons
+			if (tableType === 'mainTable') {
+				tallymin.setupEvents([
+					...tallymin.events.filter(e => e.handler === 'applyQuickScore')
+				]);
+			}
+
+			// need to add buttons to all existing rows in mainTable
+			if (tableType === 'quickscores') {
+				tallymin.mainTable.setColumns(mainTableCfg.columns);
+			}
 		},
 		historyUndo: function() {
-			tallymin.table.undo();
+			tallymin.mainTable.undo();
 		},
 		historyRedo: function() {
-			tallymin.table.redo();
+			tallymin.mainTable.redo();
 		},
 		modifySelectedFocus: function() {
 			this.select();
@@ -470,7 +479,7 @@ const tallymin = {
 			let modifyAmt = amountInput.value;
 			modifyAmt = parseInt(modifyAmt, 10);
 
-			tallymin.table.getSelectedRows().forEach(row => {
+			tallymin.mainTable.getSelectedRows().forEach(row => {
 				let {score} = row.getData();
 				score = parseInt(score, 10);
 				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
@@ -482,7 +491,7 @@ const tallymin = {
 			tallymin.sortScoreColumn();
 		},
 		deleteSelectedRows: function() {
-			tallymin.table.getSelectedRows().forEach(row => {
+			tallymin.mainTable.getSelectedRows().forEach(row => {
 				row.delete();
 			});
 		},
@@ -491,7 +500,7 @@ const tallymin = {
 			const buttonText = locked ? 'Unlock Names' : 'Lock Names';
 			this.textContent = buttonText;
 
-			tallymin.table.getRows().forEach(row => {
+			tallymin.mainTable.getRows().forEach(row => {
 				const [nameCell] = row.getCells().filter(cell => cell.getField() === 'name');
 				if (locked) {
 					nameCell.getElement().classList.add('locked');
