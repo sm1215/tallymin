@@ -281,6 +281,7 @@ const tallymin = {
 	quickscoresSelector: '#quickscores-table',
 	mainTable: null,
 	quickscores: null,
+	quickscoresMinimized: false,
 	namesLocked: false,
 	intercomDuration: 3, // seconds
 	intercomTimer: null,
@@ -367,6 +368,11 @@ const tallymin = {
 			selector: '.clear-table',
 			type: 'click',
 			handler: 'clearTable'
+		},
+		{
+			selector: '.quickscores-minimize-button',
+			type: 'click',
+			handler: 'quickscoresToggleMinimize'
 		}
 	],
 	init: function() {
@@ -533,6 +539,16 @@ const tallymin = {
 					nameCell.getElement().classList.remove('locked');
 				}
 			});
+		},
+		quickscoresToggleMinimize: function() {
+			const minimized = tallymin.quickscoresMinimized = !tallymin.quickscoresMinimized;
+			console.log("minimized", minimized);
+			const body = document.querySelector('body');
+			if (minimized) {
+				body.classList.add('quickscores-minimized');
+			} else {
+				body.classList.remove('quickscores-minimized');
+			}
 		},
 		closeIntercom: function() {
 			this.classList.remove('show');

@@ -164,6 +164,7 @@ button:focus {
 
 .table-container {
 	margin: 50px 2.5% 0 2.5%;
+	transition: width 0.2s ease-in-out;
 }
 
 #tallymin-container {
@@ -172,6 +173,46 @@ button:focus {
 
 #quickscores-container {
 	width: 15%;
+}
+
+#quickscores-table {
+	position: relative;
+	overflow: visible;
+}
+
+.quickscores-minimized #tallymin-container {
+	width: calc(95% - 28px);
+}
+
+#quickscores-table-wrapper {
+	position: relative;
+}
+
+.quickscores-minimize-button {
+	position: absolute;
+}
+
+.quickscores-minimize-button.minimize {
+	font-size: 22px;
+	top: -1px;
+	left: -19px;
+	padding: 0;
+	cursor: pointer;
+}
+
+.quickscores-minimize-button.maximize {
+	display: none;
+	transform: rotate(-90deg);
+	left: -66px;
+	top: 38px;
+}
+
+.quickscores-minimized .quickscores-minimize-button.minimize {
+	display: none;
+}
+
+.quickscores-minimized .quickscores-minimize-button.maximize {
+	display: block;
 }
 
 .brand {

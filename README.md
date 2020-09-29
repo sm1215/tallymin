@@ -25,7 +25,7 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - allow the quickscores table to hide on the side of the screen under a tab
+  - make quick scores hide animation smoother
   - migrate instructions to the page itself
   - add a table that displays the history, there's a tradeoff here with how much screen real estate we have available and how much value this would add. might not add this
   - persist table state and history through refresh
@@ -51,3 +51,4 @@ completed changes
   - hookup clear button functionality, add one to main table
   - fix bug when adding quickscores buttons, they are using the wrong id
   - add delete last row button to quickscores
+  - allow the quickscores table to hide on the side of the screen under a tab
