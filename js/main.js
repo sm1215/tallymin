@@ -450,20 +450,20 @@ const tallymin = {
 		addRow: function() {
 			const {tableType} = this.dataset;
 			const rowDefaults = tallymin.rowDefaults[tableType];
-			rowDefaults.id = tallymin[tableType].getRows().length + 1;
-			tallymin[tableType].addRow(rowDefaults);
-
-			// need to add new event handlers for a new row of buttons
-			if (tableType === 'mainTable') {
-				tallymin.setupEvents([
-					...tallymin.events.filter(e => e.handler === 'applyQuickScore')
-				]);
-			}
+			const id = tallymin[tableType].getRows().length + 1;
+			const newRow = Object.assign({}, rowDefaults, {id});
+			
+			tallymin[tableType].addRow(newRow);
 
 			// need to add buttons to all existing rows in mainTable
 			if (tableType === 'quickscores') {
 				tallymin.mainTable.setColumns(mainTableCfg.columns);
 			}
+
+			// need to add new event handlers for a new row of buttons
+			tallymin.setupEvents([
+				...tallymin.events.filter(e => e.handler === 'applyQuickScore')
+			]);
 		},
 		historyUndo: function() {
 			tallymin.mainTable.undo();

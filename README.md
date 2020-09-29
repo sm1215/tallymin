@@ -25,7 +25,6 @@ The table history is saved so you can undo / redo changes! Just don't refresh th
 If the score column is sorted, columns will be re-sorted after each score update to maintain dynamic ordering.
 
 todo
-  - fix bug when adding quickscores buttons, they are using the wrong id
   - add delete last row button to quickscores
   - allow the quickscores table to hide on the side of the screen under a tab
   - migrate instructions to the page itself
@@ -51,3 +50,4 @@ completed changes
   - add quicksorts events when a new row is added to main table
   - add quicksorts buttons and events when a new row is added to quicksorts table
   - hookup clear button functionality, add one to main table
+  - fix bug when adding quickscores buttons, they are using the wrong id
