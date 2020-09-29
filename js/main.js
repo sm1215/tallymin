@@ -334,6 +334,11 @@ const tallymin = {
 			handler: 'deleteSelectedRows'
 		},
 		{
+			selector: '.delete-last-button',
+			type: 'click',
+			handler: 'deleteLastRow'
+		},
+		{
 			selector: '#lock-names',
 			type: 'click',
 			handler: 'lockNameCells'
@@ -400,6 +405,17 @@ const tallymin = {
 		var firstScriptTag = document.getElementsByTagName('script')[0];
 		firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 	},
+	regenerateColumns: function(tableType = 'mainTable') {
+		// need to add buttons to all existing rows in mainTable
+		if (tableType === 'quickscores') {
+			tallymin.mainTable.setColumns(mainTableCfg.columns);
+		}
+
+		// need to add new event handlers for a new row of buttons
+		tallymin.setupEvents([
+			...tallymin.events.filter(e => e.handler === 'applyQuickScore')
+		]);
+	},
 	sortScoreColumn: function() {
 		const sorters = tallymin.mainTable.getSorters();
 		// only sort the score column if it is already being sorted by the user
@@ -454,16 +470,7 @@ const tallymin = {
 			const newRow = Object.assign({}, rowDefaults, {id});
 			
 			tallymin[tableType].addRow(newRow);
-
-			// need to add buttons to all existing rows in mainTable
-			if (tableType === 'quickscores') {
-				tallymin.mainTable.setColumns(mainTableCfg.columns);
-			}
-
-			// need to add new event handlers for a new row of buttons
-			tallymin.setupEvents([
-				...tallymin.events.filter(e => e.handler === 'applyQuickScore')
-			]);
+			tallymin.regenerateColumns(tableType);
 		},
 		historyUndo: function() {
 			tallymin.mainTable.undo();
@@ -499,6 +506,12 @@ const tallymin = {
 			tallymin.mainTable.getSelectedRows().forEach(row => {
 				row.delete();
 			});
+		},
+		deleteLastRow: function() {
+			const {tableType} = this.dataset;
+			const rows = tallymin[tableType].getRows();
+			rows[rows.length - 1].delete();
+			tallymin.regenerateColumns(tableType);
 		},
 		clearTable: function() {
 			const {tableType} = this.dataset;
