@@ -5,8 +5,8 @@ const mainTableData = [
 	{
 		id: 1,
 		name: 'Sam',
-		score: -10,
-		modifyAmt: -10
+		score: -10.5,
+		modifyAmt: -5.25
 	},
 	{
 		id: 2,
@@ -68,9 +68,7 @@ const numericEditor = function(cell, onRendered, success, cancel, editorParams) 
 	});
 
 	function onSuccess(){
-		success(
-			Number(editor.value)
-		);
+		success(editor.value);
 	}
 
 	editor.addEventListener("change", onSuccess);
@@ -235,8 +233,8 @@ const mainTableCfg = {
 			},
 			cellClick: function(e, cell) {
 				let {score, modifyAmt} = cell.getData();
-				score = parseInt(score, 10),
-				modifyAmt = parseInt(modifyAmt, 10);
+				score = Number(score, 10),
+				modifyAmt = Number(modifyAmt, 10);
 
 				const cells = cell.getRow().getCells();
 				const [scoreCell] = cells.filter(cell => cell.getField() === 'score');
@@ -467,7 +465,7 @@ const tallymin = {
 				.getCells()
 				.filter(cell => cell.getField() === 'score');
 			const currentScore = scoreCell.getValue();
-			scoreCell.setValue(currentScore + amount);
+			scoreCell.setValue(Number(currentScore) + Number(amount));
 		},
 		addRow: function() {
 			const {tableType} = this.dataset;
@@ -495,11 +493,11 @@ const tallymin = {
 		modifySelectedRows: function() {
 			const amountInput = document.getElementById("multirow-modify-amount");
 			let modifyAmt = amountInput.value;
-			modifyAmt = parseInt(modifyAmt, 10);
+			modifyAmt = Number(modifyAmt, 10);
 
 			tallymin.mainTable.getSelectedRows().forEach(row => {
 				let {score} = row.getData();
-				score = parseInt(score, 10);
+				score = Number(score, 10);
 				const [scoreCell] = row.getCells().filter(cell => cell.getField() === 'score');
 				scoreCell.setValue(score + modifyAmt);
 			});

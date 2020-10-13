@@ -52,3 +52,4 @@ completed changes
   - fix bug when adding quickscores buttons, they are using the wrong id
   - add delete last row button to quickscores
   - allow the quickscores table to hide on the side of the screen under a tab
+  - allow decimal places in scores
