@@ -28,7 +28,7 @@ todo
   - make quick scores hide animation smoother
   - migrate instructions to the page itself
   - add a table that displays the history, there's a tradeoff here with how much screen real estate we have available and how much value this would add. might not add this
-  - persist table state and history through refresh
+  - persist table history through refresh
   - adjust styles to better fit mobile portrait
   - add hover ability for truncated text
 
@@ -53,3 +53,4 @@ completed changes
   - add delete last row button to quickscores
   - allow the quickscores table to hide on the side of the screen under a tab
   - allow decimal places in scores
+  - persist table state through localStorage (refresh)
