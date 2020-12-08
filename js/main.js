@@ -1,4 +1,4 @@
-const TEST_MODE = false;
+const TEST_MODE = true;
 const ENABLE_SOUND = false;
 
 const mainTableData = [
@@ -134,19 +134,9 @@ const mainTableCfg = {
 	},
 	// Triggered whenever the table data is changed. 
 	// Triggers for this include editing any cell in the table, adding a row and deleting a row or updating a row.
+	// Using this to trigger writing to localStorage for state persistence
 	dataChanged: function(data) {
-		tallymin.mainTable.download('json', 'mainTable.json');
-	},
-	// Using the downloadReady callback to intercept an export and save to localStorage instead
-	downloadReady: function(fileContents, blob) {
-		console.log("downloadReady ", fileContents);
-		store.updateState({
-			key: 'mainTable',
-			data: fileContents
-		});
-
-		// cancel the download
-		return false;
+		tallymin.saveTables();
 	},
 	columns: [
 		{
@@ -287,7 +277,13 @@ const quickscoresCfg = {
 				autoSelect: true
 			}
 		}
-	]
+	],
+	// Triggered whenever the table data is changed. 
+	// Triggers for this include editing any cell in the table, adding a row and deleting a row or updating a row.
+	// Using this to trigger writing to localStorage for state persistence
+	dataChanged: function(data) {
+		tallymin.saveTables();
+	}
 }
 
 const tallymin = {
@@ -400,11 +396,11 @@ const tallymin = {
 		// so might as well leverage the benefit
 		this.quickscores = new Tabulator(this.quickscoresSelector, quickscoresCfg);
 		this.mainTable = new Tabulator(this.containerSelector, mainTableCfg);
-		this.setupEvents();
 		// enable copying
 		this.mainTable.copyToClipboard('all');
 		this.initSound();
 		this.loadData();
+		this.setupEvents();
 	},
 	loadData: function() {
 		store.init();
@@ -412,9 +408,20 @@ const tallymin = {
 			return;
 		}
 		// try to load any previously saved data
-		const {mainTable} = store.load();
-		console.log("mainTable", mainTable);
-		tallymin.mainTable.setData(mainTable);
+		const {mainTable, quickscores} = store.load();
+
+		// quickscores needs to load first because it is a dependency for mainTable
+		if (quickscores) {
+			tallymin.quickscores.setData(quickscores);
+		}
+		if (mainTable) {
+			tallymin.mainTable.setData(mainTable);
+		}
+	},
+	saveTables: function() {
+		const mainTable = tallymin.mainTable.getData();
+		const quickscores = tallymin.quickscores.getData();
+		store.updateTables({mainTable, quickscores});
 	},
 	setupEvents: function(events = []) {
 		if (events.length <= 0) {

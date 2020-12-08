@@ -2,7 +2,8 @@ const store = {
   enabled: true,
   key: 'tallymin',
   state: {
-    mainTable: []
+    mainTable: [],
+    quickscores: []
   },
   init: function() {
     if (!localStorage) {
@@ -20,13 +21,16 @@ const store = {
       console.log(err);
     }
   },
-  updateState({key, data}) {
-    this.state[key] = data;
-    console.log("updating state", this.state);
+  updateTables({mainTable, quickscores}) {
+    if (mainTable) {
+      this.state.mainTable = mainTable;
+    }
+    if (quickscores) {
+      this.state.quickscores = quickscores;
+    }
     this.save();
   },
   save: function() {
-    console.log("saving");
     try {
       const stringifiedData = JSON.stringify(this.state);
       localStorage.setItem(this.key, stringifiedData);
