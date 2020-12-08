@@ -408,7 +408,11 @@ const tallymin = {
 			return;
 		}
 		// try to load any previously saved data
-		const {mainTable, quickscores} = store.load();
+		const data = store.load();
+		if (!data) {
+			return;
+		}
+		const {mainTable, quickscores} = data;
 
 		// quickscores needs to load first because it is a dependency for mainTable
 		if (quickscores) {

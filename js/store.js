@@ -45,8 +45,7 @@ const store = {
     try {
       const stringifiedData = localStorage.getItem(this.key);
       const data = JSON.parse(stringifiedData);
-      this.state = data;
-      return this.state;
+      return data;
     } catch (err) {
       this.handleError({
         message: 'Could not load previously saved data. Sorry :[',
