@@ -1,5 +1,5 @@
-const TEST_MODE = true;
-const ENABLE_SOUND = true;
+const TEST_MODE = false;
+const ENABLE_SOUND = false;
 
 const mainTableData = [
 	{
@@ -131,6 +131,22 @@ const mainTableCfg = {
 		});
 
 		return `\`\`\`\n${output}\`\`\``;
+	},
+	// Triggered whenever the table data is changed. 
+	// Triggers for this include editing any cell in the table, adding a row and deleting a row or updating a row.
+	dataChanged: function(data) {
+		tallymin.mainTable.download('json', 'mainTable.json');
+	},
+	// Using the downloadReady callback to intercept an export and save to localStorage instead
+	downloadReady: function(fileContents, blob) {
+		console.log("downloadReady ", fileContents);
+		store.updateState({
+			key: 'mainTable',
+			data: fileContents
+		});
+
+		// cancel the download
+		return false;
 	},
 	columns: [
 		{
@@ -387,10 +403,18 @@ const tallymin = {
 		this.setupEvents();
 		// enable copying
 		this.mainTable.copyToClipboard('all');
-		
-		if (!ENABLE_SOUND) {
-			this.initSound();
+		this.initSound();
+		this.loadData();
+	},
+	loadData: function() {
+		store.init();
+		if (!store.enabled) {
+			return;
 		}
+		// try to load any previously saved data
+		const {mainTable} = store.load();
+		console.log("mainTable", mainTable);
+		tallymin.mainTable.setData(mainTable);
 	},
 	setupEvents: function(events = []) {
 		if (events.length <= 0) {
@@ -403,6 +427,9 @@ const tallymin = {
 		});
 	},
 	initSound: function() {
+		if (!ENABLE_SOUND) {
+			return;
+		}
 		var tag = document.createElement('script');
 		tag.id = 'iframe-demo';
 		tag.src = 'https://www.youtube.com/iframe_api';
@@ -540,7 +567,6 @@ const tallymin = {
 		},
 		quickscoresToggleMinimize: function() {
 			const minimized = tallymin.quickscoresMinimized = !tallymin.quickscoresMinimized;
-			console.log("minimized", minimized);
 			const body = document.querySelector('body');
 			if (minimized) {
 				body.classList.add('quickscores-minimized');
@@ -576,4 +602,5 @@ const tallymin = {
 
 (function() {
 	tallymin.init();
+	store.load();
 })();

@@ -1,18 +1,28 @@
 const store = {
+  enabled: true,
   key: 'tallymin',
   state: {
     mainTable: []
   },
   init: function() {
-    console.log("store works");
+    if (!localStorage) {
+      this.enabled = false;
+      this.handleError({
+        message: 'Error occurred while checking for data saving capabilities. Anything written is temporary and won\'t be saved.'
+      });
+    }
   },
   handleError: function({message, err}) {
-    console.warn(message);
-    console.log(err);
+    if (message) {
+      console.warn(message);
+    }
+    if (err) {
+      console.log(err);
+    }
   },
-  updateState({key, contents}) {
-    console.log("updating state");
-    this.state[key] = contents;
+  updateState({key, data}) {
+    this.state[key] = data;
+    console.log("updating state", this.state);
     this.save();
   },
   save: function() {
@@ -29,8 +39,10 @@ const store = {
   },
   load: function() {
     try {
-      const stringifiedData = localStorage.getItem(this.key)
-      console.log("loading stringifiedData", stringifiedData);
+      const stringifiedData = localStorage.getItem(this.key);
+      const data = JSON.parse(stringifiedData);
+      this.state = data;
+      return this.state;
     } catch (err) {
       this.handleError({
         message: 'Could not load previously saved data. Sorry :[',
