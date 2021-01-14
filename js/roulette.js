@@ -6,7 +6,7 @@ const roulette = {
   getRandom(min, max) {
     return Math.random() * (max - min) + min;
   },
-  run: function(options) {
+  spin: function(options) {
     const spinLength = this.getRandom(this.spinLengthMin, this.spinLengthMax);
     // TODO: randomly choose a winner from the options provided
     // need to figure out what structure we can pull in from the rows selected by tabulator.js

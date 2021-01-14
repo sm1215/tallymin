@@ -383,6 +383,11 @@ const tallymin = {
 			selector: '.quickscores-minimize-button',
 			type: 'click',
 			handler: 'quickscoresToggleMinimize'
+		},
+		{
+			selector: '#roulette',
+			type: 'click',
+			handler: 'startRoulette'
 		}
 	],
 	init: function() {
@@ -575,6 +580,19 @@ const tallymin = {
 					nameCell.getElement().classList.remove('locked');
 				}
 			});
+		},
+		startRoulette: function() {
+			const selectedRows = tallymin.mainTable.getSelectedRows();
+
+			if (selectedRows.length <= 1) {
+				tallymin.intercom('Need to select 2 or more rows for a random Roulette winner.');
+			}
+			
+			const ids = selectedRows.map(row => {
+				let {id} = row.getData();
+				return id;
+			});
+			roulette.spin(ids);
 		},
 		quickscoresToggleMinimize: function() {
 			const minimized = tallymin.quickscoresMinimized = !tallymin.quickscoresMinimized;
