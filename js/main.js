@@ -589,7 +589,7 @@ const tallymin = {
 			}
 			
 			const elements = selectedRows.map(row => row.getElement());
-			roulette.spin(elements);
+			roulette.run(elements);
 		},
 		quickscoresToggleMinimize: function() {
 			const minimized = tallymin.quickscoresMinimized = !tallymin.quickscoresMinimized;

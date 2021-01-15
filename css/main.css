@@ -32,6 +32,7 @@
 	--grey2: #515E66;
 	--dark: #293033;
 	--highlight1: #ffe202;
+	--winner1: #3dcc5c;
 	
 	--control-bg: var(--light1);
 	--control-text: var(--vibrant);
@@ -50,6 +51,7 @@
 	--table-hover-text: var(--grey2);
 	--table-drop-shadow: var(--grey2);
 	--table-highlight-bg: var(--highlight1);
+	--table-winner-bg: var(--winner1);
 
 	--input-bg: var(--light1);
 	--input-text: var(--grey2);
@@ -128,6 +130,10 @@ button:hover i {
 
 .tabulator-row.tabulator-highlight {
 	background-color: var(--table-highlight-bg);
+}
+
+.tabulator-row.tabulator-winner {
+	background-color: var(--table-winner-bg);
 }
 
 .controls input {
