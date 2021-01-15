@@ -588,11 +588,8 @@ const tallymin = {
 				tallymin.intercom('Need to select 2 or more rows for a random Roulette winner.');
 			}
 			
-			const ids = selectedRows.map(row => {
-				let {id} = row.getData();
-				return id;
-			});
-			roulette.spin(ids);
+			const elements = selectedRows.map(row => row.getElement());
+			roulette.spin(elements);
 		},
 		quickscoresToggleMinimize: function() {
 			const minimized = tallymin.quickscoresMinimized = !tallymin.quickscoresMinimized;

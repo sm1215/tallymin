@@ -1,17 +1,40 @@
 const roulette = {
-  highlightClass: '.tabulator-highlight',
+  highlightClass: 'tabulator-highlight',
   winnerClass: 'tabulator-winner',
   spinLengthMin: 2000,
   spinLengthMax: 4000,
-  getRandom(min, max) {
-    return Math.random() * (max - min) + min;
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
+  getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
   },
-  spin: function(options) {
-    const spinLength = this.getRandom(this.spinLengthMin, this.spinLengthMax);
-    // TODO: randomly choose a winner from the options provided
-    // need to figure out what structure we can pull in from the rows selected by tabulator.js
+  spin: async function(rowElements) {
+    const winner = this.getRandomIntInclusive(0, rowElements.length - 1);
 
-    // cycle through rows adding and removing the highlightClass as needed
-    // cycle multiple times, decreasing the spinLength each time
+    let elementIndex = 0;
+    while (elementIndex < rowElements.length) {
+      let element = rowElements[elementIndex];
+      await this.highlight(element).then(async result => {
+        await this.wash(element);
+      });
+      elementIndex++;
+    }
+  },
+  highlight: async function(element) {
+    return await new Promise(resolve => {
+      setTimeout(() => {
+        element.classList.add(this.highlightClass);
+        resolve();
+      }, 1);
+    });
+  },
+  wash: async function(element) {
+    return await new Promise(resolve => {
+      setTimeout(() => {
+        element.classList.remove(this.highlightClass);
+        resolve();
+      }, 150);
+    });
   }
 }
