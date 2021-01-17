@@ -15,9 +15,9 @@ const roulette = {
   run: async function(elements) {
     this.winner = this.getRandomIntInclusive(0, elements.length - 1);
     let highlights = this.getRandomIntInclusive(elements.length * 2, elements.length * 5);
-    let offset = elements.length + this.winner;
-    let remainder = highlights % offset;
-    let finalHighlights = highlights + remainder;
+    let remainder = highlights % elements.length;
+    let offset = elements.length - remainder;
+    let finalHighlights = highlights + offset + this.winner;
 
     // reset the starting point
     this.elementIndex = 0;
