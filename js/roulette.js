@@ -21,6 +21,12 @@ const roulette = {
 
     // reset the starting point
     this.elementIndex = 0;
+    // reset any classes
+    elements.forEach(element => {
+      element.classList.remove(this.highlightClass);
+      element.classList.remove(this.winnerClass);
+    });
+
     const winnerElement = elements[this.winner];
 
     await this.spin(finalHighlights, elements).then(async result => {
