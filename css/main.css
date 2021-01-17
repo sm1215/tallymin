@@ -31,6 +31,8 @@
 	--grey1: #A1BBCC;
 	--grey2: #515E66;
 	--dark: #293033;
+	--highlight1: #ffe202;
+	--winner1: #3dcc5c;
 	
 	--control-bg: var(--light1);
 	--control-text: var(--vibrant);
@@ -48,6 +50,8 @@
 	--table-hover-bg: var(--accent);
 	--table-hover-text: var(--grey2);
 	--table-drop-shadow: var(--grey2);
+	--table-highlight-bg: var(--highlight1);
+	--table-winner-bg: var(--winner1);
 
 	--input-bg: var(--light1);
 	--input-text: var(--grey2);
@@ -122,6 +126,35 @@ button:hover i {
 .tabulator-row.tabulator-selected:hover {
 	color: var(--table-selected-text);
 	background-color: var(--table-selected-bg);
+}
+
+.tabulator-row.tabulator-highlight {
+	background-color: var(--table-highlight-bg);
+}
+
+.tabulator-row.tabulator-winner-blink {
+	animation-name: winnerBlink;
+	animation-duration: 1s;
+	animation-iteration-count: 3;
+}
+
+.tabulator-row.tabulator-winner {
+	background-color: var(--table-winner-bg);
+	transition: background-color 0.25s ease-in-out;
+}
+
+@keyframes winnerBlink {
+	from {
+		background-color: var(--table-selected-bg);
+	}
+
+	50% {
+		background-color: var(--table-winner-bg);
+	}
+
+	to {
+		background-color: var(--table-selected-bg);
+	}
 }
 
 .controls input {
