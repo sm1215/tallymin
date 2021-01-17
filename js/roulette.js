@@ -1,7 +1,9 @@
 const roulette = {
   highlightClass: 'tabulator-highlight',
+  winnerBlinkClass: 'tabulator-winner-blink',
   winnerClass: 'tabulator-winner',
-  displayTime: 225,
+  highlightDisplayTime: 150,
+  winnerDisplayTime: 3000,
   winner: null,
   elementIndex: 0,
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random
@@ -19,9 +21,17 @@ const roulette = {
 
     // reset the starting point
     this.elementIndex = 0;
+    const winnerElement = elements[this.winner];
 
     await this.spin(finalHighlights, elements).then(async result => {
-      await this.spin(5, [elements[this.winner]], true);
+      winnerElement.classList.add(this.winnerBlinkClass);
+      setTimeout(() => {
+        winnerElement.classList.remove(this.winnerBlinkClass);
+        winnerElement.classList.add(this.winnerClass);
+        setTimeout(() => {
+          winnerElement.classList.remove(this.winnerClass);
+        }, this.winnerDisplayTime / 2)
+      }, this.winnerDisplayTime);
     });
   },
   spin: async function(loops, elements, isWinner) {
@@ -32,7 +42,7 @@ const roulette = {
         }
         let element = elements[this.elementIndex];
         await this.highlight(element, isWinner).then(async result => {
-          await this.wash(element);
+          await this.wash(element, isWinner);
         });
         this.elementIndex++;
         loops--;
@@ -40,11 +50,10 @@ const roulette = {
       resolve();
     });
   },
-  highlight: async function(element, isWinner) {
-    const addClass = isWinner ? this.winnerClass : this.highlightClass;
+  highlight: async function(element) {
     return await new Promise(resolve => {
       setTimeout(() => {
-        element.classList.add(addClass);
+        element.classList.add(this.highlightClass);
         resolve();
       }, 1);
     });
@@ -53,9 +62,8 @@ const roulette = {
     return await new Promise(resolve => {
       setTimeout(() => {
         element.classList.remove(this.highlightClass);
-        element.classList.remove(this.winnerClass);
         resolve();
-      }, this.displayTime);
+      }, this.highlightDisplayTime);
     });
   }
 }

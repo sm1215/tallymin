@@ -132,8 +132,29 @@ button:hover i {
 	background-color: var(--table-highlight-bg);
 }
 
+.tabulator-row.tabulator-winner-blink {
+	animation-name: winnerBlink;
+	animation-duration: 1s;
+	animation-iteration-count: 3;
+}
+
 .tabulator-row.tabulator-winner {
 	background-color: var(--table-winner-bg);
+	transition: background-color 0.25s ease-in-out;
+}
+
+@keyframes winnerBlink {
+	from {
+		background-color: var(--table-selected-bg);
+	}
+
+	50% {
+		background-color: var(--table-winner-bg);
+	}
+
+	to {
+		background-color: var(--table-selected-bg);
+	}
 }
 
 .controls input {
